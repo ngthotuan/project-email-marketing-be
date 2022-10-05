@@ -19,4 +19,5 @@ public class TemplateEntity {
     private String subject;
     private String cc;
     private String content;
+    private String from;
 }
