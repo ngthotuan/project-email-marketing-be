@@ -1,0 +1,8 @@
+com:
+  example:
+    demo:
+        jwt:
+            expired_token: ${EXPIRED_TOKEN:2700}
+            expired_refresh_token: ${EXPIRED_REFRESH_TOKEN:86400}
+            issuer: ${ISSUER:http://localhost:8000}
+            secret: ${SECRET:secret4684646684646846468488468suhfusdhfiseifhisifhisheifhsiehfihsihe}
