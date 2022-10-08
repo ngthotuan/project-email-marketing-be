@@ -109,11 +109,6 @@ public class JwtUtils {
                 .compact();
     }
 
-
-    public long getTimeExpiredToken(String token) {
-        return expiredToken;
-    }
-
     //validate token
     public Boolean validateToken(String token, String username) {
         String usernameFromToken = getUsernameFromToken(token);
