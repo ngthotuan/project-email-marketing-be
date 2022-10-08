@@ -1,9 +1,6 @@
 package com.example.projectemailmarketingbe.service.Impl;
 
-import com.example.projectemailmarketingbe.dto.UserLoginDto;
-import com.example.projectemailmarketingbe.dto.UserLoginRpDto;
-import com.example.projectemailmarketingbe.dto.UserRegisterDto;
-import com.example.projectemailmarketingbe.dto.UserRegisterRpDto;
+import com.example.projectemailmarketingbe.dto.*;
 import com.example.projectemailmarketingbe.exception.BadRequestException;
 import com.example.projectemailmarketingbe.exception.NotFoundException;
 import com.example.projectemailmarketingbe.model.UserEntity;
@@ -15,9 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static com.example.projectemailmarketingbe.constant.MessageConstant.USER_EXISTED;
 import static com.example.projectemailmarketingbe.constant.MessageConstant.USER_NOT_FOUND;
@@ -61,5 +55,17 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new NotFoundException("Username or Password does not correct");
         }
+    }
+
+    @Override
+    public UserInfoRpDto getUserInfo(String username) {
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(() -> {
+                    log.error(USER_NOT_FOUND, username);
+                    return new NotFoundException("user not found");
+                });
+        UserInfoRpDto userInfoRpDto = modelMapper.map(user, UserInfoRpDto.class);
+        userInfoRpDto.setRole(user.getRole());
+        return userInfoRpDto;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.projectemailmarketingbe.configuration;
 
+import com.example.projectemailmarketingbe.constant.AllowRouteConstant;
 import com.example.projectemailmarketingbe.filter.RequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,10 +25,14 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Set permissions on endpoints
+        String[] allowRoutes = new String[]{
+                AllowRouteConstant.API_DOC + "/**",
+                AllowRouteConstant.USER_LOGIN,
+                AllowRouteConstant.USER_REGISTER,
+        };
         http.authorizeRequests()
-                .antMatchers("/api-docs/**", "/users/**").permitAll()
+                .antMatchers(allowRoutes).permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-//                .antMatchers("/users/**").permitAll()
                 .anyRequest().authenticated();
         // Set unauthorized requests exception handler
         http.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);

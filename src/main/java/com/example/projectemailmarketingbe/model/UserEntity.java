@@ -25,6 +25,6 @@ public class UserEntity {
     private String password;
     private String email;
     private String name;
-    private String role;
-    private String permission;
+    private String role = "";
+    private String permission = "";
 }
