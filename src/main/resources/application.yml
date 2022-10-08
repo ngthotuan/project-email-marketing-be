@@ -1,6 +1,6 @@
 spring:
   datasource:
-    driverClassName: ${DB_DRIVER_CLASS_NAME:com.mysql.jdbc.Driver}
+    driverClassName: ${DB_DRIVER_CLASS_NAME:com.mysql.cj.jdbc.Driver}
     url: ${DB_URL:jdbc:mysql://localhost:3306/email_marketing}
     username: ${DB_USERNAME:emtest}
     password: ${DB_PASSWORD:emtest}
