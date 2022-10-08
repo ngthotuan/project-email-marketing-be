@@ -5,9 +5,14 @@ spring:
     username: ${DB_USERNAME:emtest}
     password: ${DB_PASSWORD:emtest}
   jpa:
+
     hibernate.ddl-auto: create-drop
     generate-ddl: true
     show-sql: true
+    properties:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      format_sql: 'true'
+
 com:
   example:
     demo:
