@@ -21,7 +21,5 @@ public class TemplateEntity {
     private UUID templateId;
     private String name;
     private String subject;
-    private String cc;
     private String content;
-    private String from;
 }
