@@ -23,6 +23,8 @@ public class EmailEntity {
     @Column(unique = true)
     private String email;
 
+    private String password;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "proxyId")
     private ProxyEntity proxyEntity;

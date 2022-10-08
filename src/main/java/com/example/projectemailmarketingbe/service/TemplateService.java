@@ -1,6 +1,5 @@
 package com.example.projectemailmarketingbe.service;
 
-import com.example.projectemailmarketingbe.dto.EmailDto;
 import com.example.projectemailmarketingbe.dto.TemplateDto;
 
 import java.util.List;

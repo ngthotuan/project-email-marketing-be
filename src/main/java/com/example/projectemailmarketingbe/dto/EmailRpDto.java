@@ -1,13 +1,11 @@
 package com.example.projectemailmarketingbe.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class EmailDto {
+@Builder
+public class EmailRpDto {
     private String email;
-    private String password;
 }
