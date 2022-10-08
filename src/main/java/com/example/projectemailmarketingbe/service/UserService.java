@@ -7,5 +7,6 @@ import com.example.projectemailmarketingbe.dto.UserRegisterRpDto;
 
 public interface UserService {
     UserRegisterRpDto register(UserRegisterDto userRegisterRequestDto);
+
     UserLoginRpDto login(UserLoginDto userLoginRequestDto);
 }

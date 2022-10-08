@@ -4,6 +4,7 @@ import com.example.projectemailmarketingbe.dto.UserLoginDto;
 import com.example.projectemailmarketingbe.dto.UserLoginRpDto;
 import com.example.projectemailmarketingbe.dto.UserRegisterDto;
 import com.example.projectemailmarketingbe.dto.UserRegisterRpDto;
+import com.example.projectemailmarketingbe.exception.BadRequestException;
 import com.example.projectemailmarketingbe.exception.NotFoundException;
 import com.example.projectemailmarketingbe.model.UserEntity;
 import com.example.projectemailmarketingbe.repository.UserRepository;
@@ -15,6 +16,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+import static com.example.projectemailmarketingbe.constant.MessageConstant.USER_EXISTED;
 import static com.example.projectemailmarketingbe.constant.MessageConstant.USER_NOT_FOUND;
 
 @Service
@@ -28,6 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserRegisterRpDto register(UserRegisterDto userRegisterRequestDto) {
+        userRepository.findByUsername(userRegisterRequestDto.getUsername()).ifPresent((user) ->{
+            throw new BadRequestException(String.format(USER_EXISTED, userRegisterRequestDto.getUsername()));
+        });
         UserEntity user = modelMapper.map(userRegisterRequestDto, UserEntity.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         UserEntity userSaved = userRepository.save(user);
