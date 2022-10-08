@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -16,5 +17,7 @@ public class UserLoginRpDto {
     private String username;
     private String name;
     private String accessToken;
+    private LocalDateTime expiredDateAccess;
     private String refreshToken;
+    private LocalDateTime expiredDateRefresh;
 }
