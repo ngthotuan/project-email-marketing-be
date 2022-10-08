@@ -10,18 +10,22 @@ import com.example.projectemailmarketingbe.repository.UserRepository;
 import com.example.projectemailmarketingbe.service.UserService;
 import com.example.projectemailmarketingbe.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
+
+import static com.example.projectemailmarketingbe.constant.MessageConstant.USER_NOT_FOUND;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final JwtUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+
     @Override
     public UserRegisterRpDto register(UserRegisterDto userRegisterRequestDto) {
         UserEntity user = modelMapper.map(userRegisterRequestDto, UserEntity.class);
@@ -33,13 +37,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserLoginRpDto login(UserLoginDto userLoginRequestDto) {
-        UserEntity user = userRepository.findByUsername(userLoginRequestDto.getUsername()).orElseThrow(()-> new NotFoundException("user not found"));
-//        if (!user.getIsActive()) {
-//            throw new UserBlockedException("User is not active");
-//        }
-//        if (user.getIsDeleted()) {
-//            throw new UserBlockedException("User is deleted");
-//        }
+        UserEntity user = userRepository.findByUsername(userLoginRequestDto.getUsername())
+                .orElseThrow(() -> {
+                    log.error(USER_NOT_FOUND, userLoginRequestDto.getUsername());
+                    return new NotFoundException("user not found");
+                });
         if (passwordEncoder.matches(userLoginRequestDto.getPassword(), user.getPassword())) {
             UserLoginRpDto loginResponseDto = modelMapper.map(user, UserLoginRpDto.class);
             loginResponseDto.setAccessToken(jwtUtils.generateAccessToken(user.getUsername()));

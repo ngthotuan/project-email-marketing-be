@@ -1,8 +1,8 @@
 spring:
   datasource:
-    driverClassName: ${DB_DRIVER_CLASS_NAME:org.postgresql.Driver}
-    url: ${DB_URL:jdbc:postgresql://localhost:5433/elite}
-    username: ${DB_USERNAME:postgres}
+    driverClassName: ${DB_DRIVER_CLASS_NAME:com.mysql.jdbc.Driver}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/email_marketing}
+    username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:root}
   jpa:
     hibernate.ddl-auto: create-drop
