@@ -31,6 +31,10 @@ public class JwtUtils {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
+    public long getExpirationFromToken(String token) {
+        return getClaimFromToken(token, Claims::getExpiration).getTime();
+    }
+
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
         if (claims == null) {
@@ -103,6 +107,11 @@ public class JwtUtils {
                 .setExpiration(new Date(System.currentTimeMillis() + expiredToken * 1000))
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .compact();
+    }
+
+
+    public long getTimeExpiredToken(String token) {
+        return expiredToken;
     }
 
     //validate token

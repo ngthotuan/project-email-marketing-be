@@ -51,10 +51,12 @@ public class UserServiceImpl implements UserService {
                 });
         if (passwordEncoder.matches(userLoginRequestDto.getPassword(), user.getPassword())) {
             UserLoginRpDto loginResponseDto = modelMapper.map(user, UserLoginRpDto.class);
-            loginResponseDto.setAccessToken(jwtUtils.generateAccessToken(user.getUsername()));
-            loginResponseDto.setRefreshToken(jwtUtils.generateRefreshToken(user.getUsername()));
-            loginResponseDto.setExpiredDateAccess(LocalDateTime.now().plusMinutes(40));
-            loginResponseDto.setExpiredDateRefresh(LocalDateTime.now().plusDays(1));
+            String accessToken = jwtUtils.generateAccessToken(user.getUsername());
+            String refreshToken = jwtUtils.generateRefreshToken(user.getUsername());
+            loginResponseDto.setAccessToken(accessToken);
+            loginResponseDto.setRefreshToken(refreshToken);
+            loginResponseDto.setAccessTokenExpiredAt(jwtUtils.getExpirationFromToken(accessToken));
+            loginResponseDto.setRefreshTokenExpiredAt(jwtUtils.getExpirationFromToken(refreshToken));
             return loginResponseDto;
         } else {
             throw new NotFoundException("Username or Password does not correct");
