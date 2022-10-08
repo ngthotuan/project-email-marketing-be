@@ -17,6 +17,8 @@ public class UserEntity {
     private UUID userId;
     private String username;
     private String password;
+    private String email;
+    private String name;
     private String role;
     private String permission;
 }
