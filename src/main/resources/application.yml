@@ -2,8 +2,8 @@ spring:
   datasource:
     driverClassName: ${DB_DRIVER_CLASS_NAME:com.mysql.jdbc.Driver}
     url: ${DB_URL:jdbc:mysql://localhost:3306/email_marketing}
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:root}
+    username: ${DB_USERNAME:emtest}
+    password: ${DB_PASSWORD:emtest}
   jpa:
     hibernate.ddl-auto: create-drop
     generate-ddl: true
