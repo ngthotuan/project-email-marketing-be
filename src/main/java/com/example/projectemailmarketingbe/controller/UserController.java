@@ -3,6 +3,7 @@ package com.example.projectemailmarketingbe.controller;
 import com.example.projectemailmarketingbe.dto.*;
 import com.example.projectemailmarketingbe.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     @PostMapping("/register")
-    public ResponseEntity<ResponseBodyDto<UserRegisterRpDto>> createUser(@RequestBody UserRegisterDto userRegisterRequestDto) {
+    public ResponseEntity<ResponseBodyDto<UserRegisterRpDto>> createUser(@Validated @RequestBody UserRegisterDto userRegisterRequestDto) {
         ResponseBodyDto<UserRegisterRpDto> responseBodyDto = new ResponseBodyDto<UserRegisterRpDto>();
         responseBodyDto.setData(userService.register(userRegisterRequestDto));
         responseBodyDto.setStatusCode(200);
@@ -24,7 +25,7 @@ public class UserController {
         ResponseBodyDto<UserLoginRpDto> responseBodyDto = new ResponseBodyDto<>();
         responseBodyDto.setData(userService.login(requestDto));
         responseBodyDto.setStatusCode(201);
-        return ResponseEntity.ok(responseBodyDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body( responseBodyDto);
     }
 
 }

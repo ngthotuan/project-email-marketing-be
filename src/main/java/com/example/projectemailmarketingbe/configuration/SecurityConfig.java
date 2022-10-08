@@ -25,8 +25,9 @@ public class SecurityConfig {
 
         // Set permissions on endpoints
         http.authorizeRequests()
-                .antMatchers("/api-docs/**", "/public/**").permitAll()
+                .antMatchers("/api-docs/**", "/users/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+//                .antMatchers("/users/**").permitAll()
                 .anyRequest().authenticated();
         // Set unauthorized requests exception handler
         http.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);

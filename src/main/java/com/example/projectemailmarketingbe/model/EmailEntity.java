@@ -3,10 +3,9 @@ package com.example.projectemailmarketingbe.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -14,10 +13,12 @@ import java.util.List;
 @Data
 public class EmailEntity {
     @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String emailId;
     private String email;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "proxyId" )
+    @JoinColumn(name = "proxyId")
     private ProxyEntity proxyEntity;
 }

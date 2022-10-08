@@ -31,8 +31,7 @@ public class UserServiceImpl implements UserService {
         UserEntity user = modelMapper.map(userRegisterRequestDto, UserEntity.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         UserEntity userSaved = userRepository.save(user);
-        UserRegisterRpDto userRegisterResponseDto = modelMapper.map(userSaved, UserRegisterRpDto.class);
-        return userRegisterResponseDto;
+        return modelMapper.map(userSaved, UserRegisterRpDto.class);
     }
 
     @Override
