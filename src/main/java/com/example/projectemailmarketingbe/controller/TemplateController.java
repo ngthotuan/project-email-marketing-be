@@ -32,12 +32,11 @@ public class TemplateController {
         return ResponseEntity.ok(responseBodyDto);
     }
 
-//    @DeleteMapping("/{templateId}")
-//    public ResponseEntity<ResponseBodyDto<TemplateDto>> findTemplateById(@PathVariable("templateId") UUID templateId){
-//        ResponseBodyDto<TemplateDto> responseBodyDto = new ResponseBodyDto<>();
-//        responseBodyDto.setData(templateService.findById(templateId));
-//        responseBodyDto.setStatusCode(200);
-//        return ResponseEntity.ok(responseBodyDto);
-//    }
+    @DeleteMapping("/{templateId}")
+    public ResponseEntity<ResponseBodyDto<TemplateDto>> deleteTemplateById(@PathVariable("templateId") UUID templateId){
+        ResponseBodyDto<TemplateDto> responseBodyDto = new ResponseBodyDto<>();
+        responseBodyDto.setStatusCode(200);
+        return ResponseEntity.ok(responseBodyDto);
+    }
 
 }
