@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface EmailRepository extends JpaRepository<EmailEntity, UUID> {
+public interface EmailRepository extends JpaRepository<EmailEntity, String> {
 }
