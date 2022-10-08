@@ -5,14 +5,9 @@ spring:
     username: ${DB_USERNAME:emtest}
     password: ${DB_PASSWORD:emtest}
   jpa:
-
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: update
     generate-ddl: true
     show-sql: true
-    properties:
-      dialect: org.hibernate.dialect.MySQL8Dialect
-      format_sql: 'true'
-
 com:
   example:
     demo:
@@ -21,3 +16,6 @@ com:
             expired_refresh_token: ${EXPIRED_REFRESH_TOKEN:86400}
             issuer: ${ISSUER:http://localhost:8000}
             secret: ${SECRET:secret4684646684646846468488468suhfusdhfiseifhisifhisheifhsiehfihsihe}
+server:
+  servlet:
+    context-path: /email-service/v1
