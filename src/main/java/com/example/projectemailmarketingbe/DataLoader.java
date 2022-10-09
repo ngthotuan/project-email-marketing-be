@@ -34,26 +34,32 @@ public class DataLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         // init user
-        UserRegisterDto userRegisterDto = UserRegisterDto.builder()
-                .username("emtest")
-                .password("emtest")
-                .name("EM Test")
-                .email("em@gmail.com")
-                .build();
-        UserEntity user = modelMapper.map(userRegisterDto, UserEntity.class);
-        user.setRole("admin");
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        if (userRepository.count() == 0) {
+            log.info("init user");
+            UserRegisterDto userRegisterDto = UserRegisterDto.builder()
+                    .username("emtest")
+                    .password("emtest")
+                    .name("EM Test")
+                    .email("em@gmail.com")
+                    .build();
+            UserEntity user = modelMapper.map(userRegisterDto, UserEntity.class);
+            user.setRole("admin");
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+        }
 
         // init email
-        List<EmailEntity> emails = LongStream.range(0, 100)
-                .mapToObj(i -> {
-                    EmailEntity email = new EmailEntity();
-                    email.setEmail(RandomString.make() + "@gmail.com");
-                    email.setPassword(RandomString.make());
-                    return email;
-                })
-                .collect(Collectors.toList());
-        emailRepository.saveAll(emails);
+        if (emailRepository.count() == 0) {
+            log.info("init email");
+            List<EmailEntity> emails = LongStream.range(0, 100)
+                    .mapToObj(i -> {
+                        EmailEntity email = new EmailEntity();
+                        email.setEmail(RandomString.make() + "@gmail.com");
+                        email.setPassword(RandomString.make());
+                        return email;
+                    })
+                    .collect(Collectors.toList());
+            emailRepository.saveAll(emails);
+        }
     }
 }
