@@ -10,13 +10,13 @@ public class EmailMapperImpl implements EmailMapper {
     @Override
     public EmailRpDto emailToEmailDto(EmailEntity emailEntity) {
         return EmailRpDto.builder()
-                .proxyUsername(emailEntity.getProxyEntity().getUsername())
+                .proxyUsername(emailEntity.getProxyEntity() != null ? emailEntity.getProxyEntity().getUsername() : "")
                 .email(emailEntity.getEmail())
                 .password(emailEntity.getPassword())
-                .proxyName(emailEntity.getProxyEntity().getName())
-                .host(emailEntity.getProxyEntity().getHost())
-                .port(emailEntity.getProxyEntity().getPort())
-                .type(emailEntity.getProxyEntity().getType())
+                .proxyName(emailEntity.getProxyEntity() != null ? emailEntity.getProxyEntity().getName() : "")
+                .host(emailEntity.getProxyEntity() != null ? emailEntity.getProxyEntity().getHost() : "")
+                .port(emailEntity.getProxyEntity() != null ? emailEntity.getProxyEntity().getPort() : "")
+                .type(emailEntity.getProxyEntity() != null ? emailEntity.getProxyEntity().getType() : "")
                 .build();
     }
 }

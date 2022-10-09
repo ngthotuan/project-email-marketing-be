@@ -25,7 +25,7 @@ public class EmailEntity {
 
     private String password;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade ={ CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "proxyId")
     private ProxyEntity proxyEntity;
 }
