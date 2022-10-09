@@ -80,20 +80,17 @@ public class EmailServiceImpl implements EmailService {
     @Transactional
     public List<EmailRpDto> addEmailsAndProxy(List<EmailWithProxyDto> emailWithProxyDtos) {
         List<EmailEntity> result = new ArrayList<>();
-        List<EmailEntity> emailEntities = emailWithProxyDtos.stream().map(emailWithProxyDto -> {
-            return EmailEntity.builder()
-                    .email(emailWithProxyDto.getEmail())
-                    .password(emailWithProxyDto.getPasswordEmail())
-                    .proxyEntity(ProxyEntity.builder()
-                            .host(emailWithProxyDto.getHost())
-                            .password(emailWithProxyDto.getPasswordProxy())
-                            .port(emailWithProxyDto.getPort())
-                            .username(emailWithProxyDto.getUsername())
-                            .type(emailWithProxyDto.getType()).build()
+        List<EmailEntity> emailEntities = emailWithProxyDtos.stream().map(emailWithProxyDto -> EmailEntity.builder()
+                .email(emailWithProxyDto.getEmail())
+                .password(emailWithProxyDto.getPasswordEmail())
+                .proxyEntity(ProxyEntity.builder()
+                        .host(emailWithProxyDto.getHost())
+                        .password(emailWithProxyDto.getPasswordProxy())
+                        .port(emailWithProxyDto.getPort())
+                        .username(emailWithProxyDto.getUsername())
+                        .type(emailWithProxyDto.getType()).build()
 
-                    ).build();
-
-        }).collect(Collectors.toList());
+                ).build()).collect(Collectors.toList());
         for (EmailEntity emailEntity : emailEntities) {
             EmailEntity save = emailRepository.save(emailEntity);
             result.add(save);

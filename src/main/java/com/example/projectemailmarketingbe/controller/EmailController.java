@@ -52,7 +52,7 @@ public class EmailController {
     }
 
     @PostMapping("/email")
-    public ResponseEntity<?> createEmail(@RequestBody EmailDto emailDto) {
+    public ResponseEntity<?> createEmail(@RequestBody EmailDto emailDto){
         ResponseBodyDto<EmailRpDto> responseBodyDto = new ResponseBodyDto<>();
         responseBodyDto.setData(emailService.addNewEmail(emailDto));
         responseBodyDto.setStatusCode(201);
