@@ -15,16 +15,16 @@ import java.util.List;
 public class EmailController {
     private final EmailService emailService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<ResponseBodyDto<PageResponseDto<EmailRpDto>>> findAll(@RequestParam(name = "page", required = false,
-                                                                                      defaultValue = "0") int page,
-                                                                                @RequestParam(name = "size",required = false,
-                                                                                      defaultValue = "20") int size,
+            defaultValue = "1") int page,
+                                                                                @RequestParam(name = "size", required = false,
+                                                                                        defaultValue = "20") int size,
                                                                                 @RequestParam(name = "search"
-                                                                                      , defaultValue = "",
-                                                                                      required = false) String search) {
+                                                                                        , defaultValue = "",
+                                                                                        required = false) String search) {
         ResponseBodyDto<PageResponseDto<EmailRpDto>> responseBodyDto = new ResponseBodyDto<>();
-        responseBodyDto.setData(emailService.findAll(search, page, size));
+        responseBodyDto.setData(emailService.findAll(search, page - 1, size));
         responseBodyDto.setStatusCode(200);
         return ResponseEntity.ok(responseBodyDto);
     }
