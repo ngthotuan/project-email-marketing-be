@@ -20,6 +20,7 @@ public class ProxyEntity {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID proxyId;
+    private String name;
     private String username;
     private String password;
     private String host;

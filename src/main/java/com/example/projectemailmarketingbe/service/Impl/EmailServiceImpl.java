@@ -5,6 +5,7 @@ import com.example.projectemailmarketingbe.dto.EmailRpDto;
 import com.example.projectemailmarketingbe.dto.EmailWithProxyDto;
 import com.example.projectemailmarketingbe.dto.PageResponseDto;
 import com.example.projectemailmarketingbe.exception.NotFoundException;
+import com.example.projectemailmarketingbe.mapper.EmailMapper;
 import com.example.projectemailmarketingbe.model.EmailEntity;
 import com.example.projectemailmarketingbe.model.ProxyEntity;
 import com.example.projectemailmarketingbe.repository.EmailRepository;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class EmailServiceImpl implements EmailService {
     private final EmailRepository emailRepository;
     private final ModelMapper modelMapper;
+    private final EmailMapper emailMapper;
 
     @Override
     public PageResponseDto<EmailRpDto> findAll(String search, int page, int size) {
@@ -40,7 +42,7 @@ public class EmailServiceImpl implements EmailService {
                 .totalPages(pageEmail.getTotalPages())
                 .totalElements(pageEmail.getTotalElements())
                 .elements(pageEmail.stream()
-                        .map(emailEntity -> EmailRpDto.builder().email(emailEntity.getEmail()).password(emailEntity.getPassword()).build())
+                        .map(emailMapper::emailToEmailDto)
                         .collect(Collectors.toList()))
                 .build();
         return pageResponseDto;
@@ -50,13 +52,13 @@ public class EmailServiceImpl implements EmailService {
     public EmailRpDto findByEmail(String email) {
         EmailEntity emailInDb = emailRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(String.format("%s not found", email)));
-        return modelMapper.map(emailInDb, EmailRpDto.class);
+        return emailMapper.emailToEmailDto(emailInDb);
     }
 
     @Override
     public EmailRpDto addNewEmail(EmailDto email) {
         EmailEntity save = emailRepository.save(EmailEntity.builder().email(email.getEmail()).password(email.getPassword()).build());
-        return modelMapper.map(save, EmailRpDto.class);
+        return emailMapper.emailToEmailDto(save);
     }
 
     @Override
@@ -73,7 +75,7 @@ public class EmailServiceImpl implements EmailService {
                 .orElseThrow(() -> new NotFoundException(String.format("%s not found", email)));
         emailInDb.setEmail(email.getEmail());
         emailInDb.setPassword(email.getPassword());
-        return modelMapper.map(emailInDb, EmailRpDto.class);
+        return emailMapper.emailToEmailDto(emailInDb);
     }
 
     @Override
@@ -85,6 +87,7 @@ public class EmailServiceImpl implements EmailService {
                 .password(emailWithProxyDto.getPasswordEmail())
                 .proxyEntity(ProxyEntity.builder()
                         .host(emailWithProxyDto.getHost())
+                        .name(emailWithProxyDto.getProxyName())
                         .password(emailWithProxyDto.getPasswordProxy())
                         .port(emailWithProxyDto.getPort())
                         .username(emailWithProxyDto.getUsername())
@@ -95,7 +98,7 @@ public class EmailServiceImpl implements EmailService {
             EmailEntity save = emailRepository.save(emailEntity);
             result.add(save);
         }
-        return result.stream().map(e -> EmailRpDto.builder().email(e.getEmail()).build()).collect(Collectors.toList());
+        return result.stream().map(emailMapper::emailToEmailDto).collect(Collectors.toList());
     }
 
 
