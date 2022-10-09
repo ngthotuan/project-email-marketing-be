@@ -14,9 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.transaction.Transactional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +35,8 @@ public class EmailServiceImpl implements EmailService {
                 .size(size)
                 .totalPages(pageEmail.getTotalPages())
                 .totalElements(pageEmail.getTotalElements())
-                .elements(pageEmail.stream().map(emailEntity -> EmailRpDto.builder().email(emailEntity.getEmail()).build())
+                .elements(pageEmail.stream()
+                        .map(emailEntity -> EmailRpDto.builder().email(emailEntity.getEmail()).password(emailEntity.getPassword()).build())
                         .collect(Collectors.toList()))
                 .build();
         return pageResponseDto;
@@ -44,8 +44,9 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public EmailRpDto findByEmail(String email) {
-        EmailEntity byId = emailRepository.findByEmail(email).orElseThrow(()->new NotFoundException(String.format("{} not found",email)));
-        return modelMapper.map(byId, EmailRpDto.class);
+        EmailEntity emailInDb = emailRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException(String.format("%s not found", email)));
+        return modelMapper.map(emailInDb, EmailRpDto.class);
     }
 
     @Override
@@ -56,22 +57,19 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void deleteEmail(String email) {
-        EmailEntity byId = emailRepository.findByEmail(email).orElseThrow(()->new NotFoundException(String.format("{}" +
-                " not" +
-                " found",email)));
-        emailRepository.delete(byId);
+        EmailEntity emailInDb = emailRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException(String.format("%s not found", email)));
+        emailRepository.delete(emailInDb);
     }
 
     @Override
     @Transactional
     public EmailRpDto updateEmail(EmailDto email) {
-        EmailEntity byId = emailRepository.findByEmail(email.getEmail()).orElseThrow(()->new NotFoundException(String.format(
-                "{} " +
-                "not" +
-                " found",email)));
-        byId.setEmail(email.getEmail());
-        byId.setPassword(email.getPassword());
-        return modelMapper.map(byId, EmailRpDto.class);
+        EmailEntity emailInDb = emailRepository.findByEmail(email.getEmail())
+                .orElseThrow(() -> new NotFoundException(String.format("%s not found", email)));
+        emailInDb.setEmail(email.getEmail());
+        emailInDb.setPassword(email.getPassword());
+        return modelMapper.map(emailInDb, EmailRpDto.class);
     }
 
 
