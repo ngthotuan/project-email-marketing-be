@@ -2,9 +2,11 @@ package com.example.projectemailmarketingbe.service.Impl;
 
 import com.example.projectemailmarketingbe.dto.EmailDto;
 import com.example.projectemailmarketingbe.dto.EmailRpDto;
+import com.example.projectemailmarketingbe.dto.EmailWithProxyDto;
 import com.example.projectemailmarketingbe.dto.PageResponseDto;
 import com.example.projectemailmarketingbe.exception.NotFoundException;
 import com.example.projectemailmarketingbe.model.EmailEntity;
+import com.example.projectemailmarketingbe.model.ProxyEntity;
 import com.example.projectemailmarketingbe.repository.EmailRepository;
 import com.example.projectemailmarketingbe.service.EmailService;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +16,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +31,8 @@ public class EmailServiceImpl implements EmailService {
     public PageResponseDto<EmailRpDto> findAll(String search, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<EmailEntity> pageEmail = search.isBlank()
-            ? emailRepository.findAll(pageable)
-                :emailRepository.findAllByEmailContaining(search, pageable);
+                ? emailRepository.findAll(pageable)
+                : emailRepository.findAllByEmailContaining(search, pageable);
         PageResponseDto pageResponseDto = PageResponseDto
                 .builder()
                 .page(page)
@@ -44,7 +47,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public EmailRpDto findByEmail(String email) {
-        EmailEntity byId = emailRepository.findByEmail(email).orElseThrow(()->new NotFoundException(String.format("{} not found",email)));
+        EmailEntity byId = emailRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(String.format("{} not found", email)));
         return modelMapper.map(byId, EmailRpDto.class);
     }
 
@@ -56,22 +59,47 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void deleteEmail(String email) {
-        EmailEntity byId = emailRepository.findByEmail(email).orElseThrow(()->new NotFoundException(String.format("{}" +
+        EmailEntity byId = emailRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(String.format("{}" +
                 " not" +
-                " found",email)));
+                " found", email)));
         emailRepository.delete(byId);
     }
 
     @Override
     @Transactional
     public EmailRpDto updateEmail(EmailDto email) {
-        EmailEntity byId = emailRepository.findByEmail(email.getEmail()).orElseThrow(()->new NotFoundException(String.format(
+        EmailEntity byId = emailRepository.findByEmail(email.getEmail()).orElseThrow(() -> new NotFoundException(String.format(
                 "{} " +
-                "not" +
-                " found",email)));
+                        "not" +
+                        " found", email)));
         byId.setEmail(email.getEmail());
         byId.setPassword(email.getPassword());
         return modelMapper.map(byId, EmailRpDto.class);
+    }
+
+    @Override
+    @Transactional
+    public List<EmailRpDto> addEmailsAndProxy(List<EmailWithProxyDto> emailWithProxyDtos) {
+        List<EmailEntity> result = new ArrayList<>();
+        List<EmailEntity> emailEntities = emailWithProxyDtos.stream().map(emailWithProxyDto -> {
+            return EmailEntity.builder()
+                    .email(emailWithProxyDto.getEmail())
+                    .password(emailWithProxyDto.getPasswordEmail())
+                    .proxyEntity(ProxyEntity.builder()
+                            .host(emailWithProxyDto.getHost())
+                            .password(emailWithProxyDto.getPasswordProxy())
+                            .port(emailWithProxyDto.getPort())
+                            .username(emailWithProxyDto.getUsername())
+                            .type(emailWithProxyDto.getType()).build()
+
+                    ).build();
+
+        }).collect(Collectors.toList());
+        for (EmailEntity emailEntity : emailEntities) {
+            EmailEntity save = emailRepository.save(emailEntity);
+            result.add(save);
+        }
+        return result.stream().map(e -> EmailRpDto.builder().email(e.getEmail()).build()).collect(Collectors.toList());
     }
 
 

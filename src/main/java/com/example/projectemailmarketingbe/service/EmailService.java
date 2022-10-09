@@ -2,8 +2,10 @@ package com.example.projectemailmarketingbe.service;
 
 import com.example.projectemailmarketingbe.dto.EmailDto;
 import com.example.projectemailmarketingbe.dto.EmailRpDto;
+import com.example.projectemailmarketingbe.dto.EmailWithProxyDto;
 import com.example.projectemailmarketingbe.dto.PageResponseDto;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface EmailService {
@@ -16,4 +18,6 @@ public interface EmailService {
     void deleteEmail(String email);
 
     EmailRpDto updateEmail(EmailDto emailDto);
+
+    List<EmailRpDto> addEmailsAndProxy(List<EmailWithProxyDto> emailWithProxyDtos);
 }
