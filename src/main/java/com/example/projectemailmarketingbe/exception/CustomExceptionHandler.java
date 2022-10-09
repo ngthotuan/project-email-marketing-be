@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class CustomExceptionHandler {
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ResponseBodyDto<ExceptionRpDto>> Exception(Exception ex, WebRequest request) {
+        log.error("An unexpected error: ", ex);
         ResponseBodyDto<ExceptionRpDto> responseBodyDto = new ResponseBodyDto<ExceptionRpDto>();
         ExceptionRpDto exceptionResponse =
                 new ExceptionRpDto( new Date(), ex.getMessage(), request.getDescription(false));

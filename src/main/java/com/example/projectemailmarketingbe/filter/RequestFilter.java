@@ -1,7 +1,6 @@
 package com.example.projectemailmarketingbe.filter;
 
 import com.example.projectemailmarketingbe.configuration.security.UserDetailServiceImpl;
-import com.example.projectemailmarketingbe.constant.AllowRouteConstant;
 import com.example.projectemailmarketingbe.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.example.projectemailmarketingbe.constant.AllowRouteConstant.allowRoutesFilter;
+
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -26,12 +27,7 @@ public class RequestFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
     private final UserDetailServiceImpl userDetailService;
 
-    public static String BEARER_TOKEN = "Bearer ";
-    private static final String[] allowRoutes = new String[]{
-            AllowRouteConstant.API_DOC,
-            AllowRouteConstant.USER_LOGIN,
-            AllowRouteConstant.USER_REGISTER,
-    };
+    private static String BEARER_TOKEN = "Bearer ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -67,7 +63,7 @@ public class RequestFilter extends OncePerRequestFilter {
         String contextPath = request.getContextPath();
         String requestURI = request.getRequestURI();
         String path = requestURI.substring(contextPath.length());
-        for (String allowRoute : allowRoutes) {
+        for (String allowRoute : allowRoutesFilter) {
             if (path.startsWith(allowRoute)) {
                 return false;
             }

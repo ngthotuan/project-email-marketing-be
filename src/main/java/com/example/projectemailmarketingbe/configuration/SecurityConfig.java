@@ -1,6 +1,5 @@
 package com.example.projectemailmarketingbe.configuration;
 
-import com.example.projectemailmarketingbe.constant.AllowRouteConstant;
 import com.example.projectemailmarketingbe.filter.RequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -12,12 +11,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.example.projectemailmarketingbe.constant.AllowRouteConstant.allowRoutesSecurity;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final RequestFilter requestFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
@@ -25,13 +27,8 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Set permissions on endpoints
-        String[] allowRoutes = new String[]{
-                AllowRouteConstant.API_DOC + "/**",
-                AllowRouteConstant.USER_LOGIN,
-                AllowRouteConstant.USER_REGISTER,
-        };
         http.authorizeRequests()
-                .antMatchers(allowRoutes).permitAll()
+                .antMatchers(allowRoutesSecurity).permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
         // Set unauthorized requests exception handler

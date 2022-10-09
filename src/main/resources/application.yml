@@ -8,6 +8,11 @@ spring:
     hibernate.ddl-auto: update
     generate-ddl: true
     show-sql: true
+    defer-datasource-initialization: true
+  h2:
+    console:
+      enabled: true
+      path: /h2
 com:
   example:
     demo:

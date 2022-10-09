@@ -40,7 +40,7 @@ public class EmailController {
     @DeleteMapping("/{email}")
     public ResponseEntity<?> deleteEmail(@PathVariable("email") String email) {
         emailService.deleteEmail(email);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/email")
