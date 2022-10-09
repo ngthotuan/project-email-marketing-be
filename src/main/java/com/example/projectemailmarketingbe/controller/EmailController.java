@@ -1,14 +1,13 @@
 package com.example.projectemailmarketingbe.controller;
 
-import com.example.projectemailmarketingbe.dto.EmailDto;
-import com.example.projectemailmarketingbe.dto.EmailRpDto;
-import com.example.projectemailmarketingbe.dto.PageResponseDto;
-import com.example.projectemailmarketingbe.dto.ResponseBodyDto;
+import com.example.projectemailmarketingbe.dto.*;
 import com.example.projectemailmarketingbe.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -44,7 +43,7 @@ public class EmailController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/")
+    @PutMapping("/email")
     public ResponseEntity<?> updateEmail(@RequestBody EmailDto emailDto) {
         ResponseBodyDto<EmailRpDto> responseBodyDto = new ResponseBodyDto<>();
         responseBodyDto.setData(emailService.updateEmail(emailDto));
@@ -52,10 +51,18 @@ public class EmailController {
         return ResponseEntity.ok(responseBodyDto);
     }
 
-    @PostMapping("/")
+    @PostMapping("/email")
     public ResponseEntity<?> createEmail(@RequestBody EmailDto emailDto) {
         ResponseBodyDto<EmailRpDto> responseBodyDto = new ResponseBodyDto<>();
         responseBodyDto.setData(emailService.addNewEmail(emailDto));
+        responseBodyDto.setStatusCode(201);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseBodyDto);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<?> createEmailWithProxies(@RequestBody List<EmailWithProxyDto> emailWithProxyDtos){
+        ResponseBodyDto<List<EmailRpDto>> responseBodyDto = new ResponseBodyDto<>();
+        responseBodyDto.setData(emailService.addEmailsAndProxy(emailWithProxyDtos));
         responseBodyDto.setStatusCode(201);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseBodyDto);
     }

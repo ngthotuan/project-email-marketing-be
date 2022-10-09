@@ -1,6 +1,7 @@
 package com.example.projectemailmarketingbe.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class ProxyEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
