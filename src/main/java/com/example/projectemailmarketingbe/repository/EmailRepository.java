@@ -15,5 +15,5 @@ public interface EmailRepository extends JpaRepository<EmailEntity, UUID> {
 
     Page<EmailEntity> findAll(Pageable pageable);
 
-    Page<EmailEntity> findAllByEmailLike(String name, Pageable pageable);
+    Page<EmailEntity> findAllByEmailContaining(String name, Pageable pageable);
 }

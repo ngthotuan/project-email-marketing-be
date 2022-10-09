@@ -27,9 +27,9 @@ public class EmailController {
     private final EmailService emailService;
 
     @GetMapping("/")
-    public ResponseEntity<ResponseBodyDto<PageResponseDto<EmailRpDto>>> findAll(@RequestParam(name = "page",
+    public ResponseEntity<ResponseBodyDto<PageResponseDto<EmailRpDto>>> findAll(@RequestParam(name = "page", required = false,
                                                                                       defaultValue = "0") int page,
-                                                                                @RequestParam(name = "size",
+                                                                                @RequestParam(name = "size",required = false,
                                                                                       defaultValue = "20") int size,
                                                                                 @RequestParam(name = "search"
                                                                                       , defaultValue = "",

@@ -26,10 +26,10 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public PageResponseDto<EmailRpDto> findAll(String search, int page, int size) {
-        Pageable pageable = (Pageable) PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size);
         Page<EmailEntity> pageEmail = search.isBlank()
             ? emailRepository.findAll(pageable)
-                :emailRepository.findAllByEmailLike(search, pageable);
+                :emailRepository.findAllByEmailContaining(search, pageable);
         PageResponseDto pageResponseDto = PageResponseDto
                 .builder()
                 .page(page)
