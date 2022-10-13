@@ -2,14 +2,12 @@ package com.example.projectemailmarketingbe.controller;
 
 import com.example.projectemailmarketingbe.dto.ResponseBodyDto;
 import com.example.projectemailmarketingbe.dto.TemplateDto;
-import com.example.projectemailmarketingbe.dto.UserLoginRpDto;
 import com.example.projectemailmarketingbe.service.TemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/templates")
@@ -25,7 +23,7 @@ public class TemplateController {
     }
 
     @GetMapping("/{templateId}")
-    public ResponseEntity<ResponseBodyDto<TemplateDto>> findTemplateById(@PathVariable("templateId") UUID templateId){
+    public ResponseEntity<ResponseBodyDto<TemplateDto>> findTemplateById(@PathVariable("templateId") Long templateId) {
         ResponseBodyDto<TemplateDto> responseBodyDto = new ResponseBodyDto<>();
         responseBodyDto.setData(templateService.findById(templateId));
         responseBodyDto.setStatusCode(200);
@@ -33,7 +31,7 @@ public class TemplateController {
     }
 
     @DeleteMapping("/{templateId}")
-    public ResponseEntity<ResponseBodyDto<TemplateDto>> deleteTemplateById(@PathVariable("templateId") UUID templateId){
+    public ResponseEntity<ResponseBodyDto<TemplateDto>> deleteTemplateById(@PathVariable("templateId") Long templateId) {
         ResponseBodyDto<TemplateDto> responseBodyDto = new ResponseBodyDto<>();
         responseBodyDto.setStatusCode(200);
         return ResponseEntity.ok(responseBodyDto);
