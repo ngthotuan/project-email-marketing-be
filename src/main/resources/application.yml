@@ -28,3 +28,5 @@ server:
     context-path: /email-service/v1
 cron:
   reschedule: ${RESCHEDULE_TASK_CRON_EXPRESSION:0 0/10 * * * *}
+thread.pool:
+  size: ${THREAD_POOL_SIZE:5}
