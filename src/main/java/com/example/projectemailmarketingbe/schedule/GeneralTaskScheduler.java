@@ -1,10 +1,7 @@
 package com.example.projectemailmarketingbe.schedule;
 
-import com.example.projectemailmarketingbe.dto.ScheduleDto;
 import com.example.projectemailmarketingbe.model.ScheduleCronjobRunEntity;
-import com.example.projectemailmarketingbe.service.Impl.ScheduleServiceImpl;
 import com.example.projectemailmarketingbe.service.ScheduleCronjobService;
-import com.example.projectemailmarketingbe.service.ScheduleService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +18,7 @@ import static com.example.projectemailmarketingbe.constant.MessageConstant.CRON_
 @Slf4j
 @Component
 @AllArgsConstructor
-public class GeneralTaskSchedule {
+public class GeneralTaskScheduler {
     @Getter
     private final List<ScheduledFuture<?>> scheduledTasks = new ArrayList<>();
     private final TaskScheduler taskScheduler;
@@ -33,7 +30,6 @@ public class GeneralTaskSchedule {
         scheduleCronjobService.findAll().forEach(scheduleCronjobRunEntity -> {
             scheduledTasks.add(notificationDefault(scheduleCronjobRunEntity));
         });
-
     }
     private ScheduledFuture notificationDefault(ScheduleCronjobRunEntity scheduleCronjobRunEntity){
         return scheduleSendNotification(scheduleCronjobRunEntity, scheduledTask);
