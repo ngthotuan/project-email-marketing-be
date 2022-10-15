@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
     private final EmailRepository emailRepository;
-    private final ModelMapper modelMapper;
     private final EmailMapper emailMapper;
 
     @Override
