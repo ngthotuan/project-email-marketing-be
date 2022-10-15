@@ -11,5 +11,5 @@ public interface ScheduleService {
     // don't need to pagination
     List<ScheduleDto> findAll();
 
-    boolean save(ScheduleDto schedule);
+    ScheduleDto updateSchedule(ScheduleDto scheduleDto);
 }

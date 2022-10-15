@@ -5,9 +5,7 @@ import com.example.projectemailmarketingbe.dto.ScheduleDto;
 import com.example.projectemailmarketingbe.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +23,14 @@ public class ScheduleController {
     public ResponseEntity<?> findAll() {
         ResponseBodyDto<List<ScheduleDto>> responseBodyDto = new ResponseBodyDto<>();
         responseBodyDto.setData(scheduleService.findAll());
+        responseBodyDto.setStatusCode(200);
+        return ResponseEntity.ok(responseBodyDto);
+    }
+
+    @PutMapping("/schedule")
+    public ResponseEntity<?> updateSchedule(@RequestBody ScheduleDto scheduleDto) {
+        ResponseBodyDto<ScheduleDto> responseBodyDto = new ResponseBodyDto<>();
+        responseBodyDto.setData(scheduleService.updateSchedule(scheduleDto));
         responseBodyDto.setStatusCode(200);
         return ResponseEntity.ok(responseBodyDto);
     }
