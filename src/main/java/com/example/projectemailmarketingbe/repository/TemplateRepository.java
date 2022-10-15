@@ -14,6 +14,6 @@ import java.util.List;
 
 @Repository
 public interface TemplateRepository extends JpaRepository<TemplateEntity, Long> {
-    @Query(value = "FROM TemplateEntity WHERE name like %:search% OR subject like %:search%", countQuery = "from ProxyEntity")
+    @Query(value = "FROM TemplateEntity WHERE name like %:search% OR subject like %:search%", countQuery = "from TemplateEntity ")
     Page<TemplateEntity> findAll(@Param("search") String search, Pageable pageable);
 }
