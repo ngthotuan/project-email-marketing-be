@@ -65,13 +65,13 @@ public class ProxyController {
         return ResponseEntity.ok(responseBodyDto);
     }
 
-//    @PostMapping("/proxy")
-//    public ResponseEntity<?> createProxy(@RequestBody ProxyRpDto proxyRpDto){
-//        ResponseBodyDto<ProxyRpDto> responseBodyDto = new ResponseBodyDto<>();
-//        responseBodyDto.setData(proxyService.(emailDto));
-//        responseBodyDto.setStatusCode(201);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(responseBodyDto);
-//    }
+    @PostMapping("/proxy")
+    public ResponseEntity<?> createProxy(@RequestBody ProxyRpDto proxyRpDto){
+        ResponseBodyDto<ProxyRpDto> responseBodyDto = new ResponseBodyDto<>();
+        responseBodyDto.setData(proxyService.addProxy(proxyRpDto));
+        responseBodyDto.setStatusCode(201);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseBodyDto);
+    }
 
     @PostMapping("")
     public ResponseEntity<?> createProxies(@RequestBody List<ProxyRpDto> proxyRpDtos) {

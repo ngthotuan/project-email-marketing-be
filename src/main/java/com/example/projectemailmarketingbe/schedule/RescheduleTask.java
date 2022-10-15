@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class RescheduleTask {
 
-    private final GeneralTaskSchedule taskScheduler;
+    private final GeneralTaskScheduler taskScheduler;
 
     @Scheduled(cron = "${cron.reschedule}")
     public void rescheduleTasks() {

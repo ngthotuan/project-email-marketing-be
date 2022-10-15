@@ -86,6 +86,12 @@ public class ProxyServiceImpl implements ProxyService {
         return proxyMapper.proxyEntityToProxyRpDto(proxyEntity);
     }
 
+    @Override
+    public ProxyRpDto addProxy(ProxyRpDto proxyRpDto) {
+        ProxyEntity proxyEntity = proxyRepository.save(proxyMapper.proxyRpDtoToProxyEntity(proxyRpDto));
+        return proxyMapper.proxyEntityToProxyRpDto(proxyEntity);
+    }
+
     private ProxyEntity findProxyByIdReturnEntity(Long proxyId) {
         return proxyRepository.findById(proxyId).orElseThrow(
                 () -> new NotFoundException(PROXY_NOT_FOUND));

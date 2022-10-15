@@ -19,4 +19,6 @@ public interface ProxyService {
 
     ProxyRpDto findProxyById(Long proxyId);
 
+    ProxyRpDto addProxy(ProxyRpDto proxyRpDto);
+
 }
