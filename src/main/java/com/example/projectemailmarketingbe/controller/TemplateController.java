@@ -1,9 +1,10 @@
 package com.example.projectemailmarketingbe.controller;
 
-import com.example.projectemailmarketingbe.dto.ResponseBodyDto;
-import com.example.projectemailmarketingbe.dto.TemplateDto;
+import com.example.projectemailmarketingbe.dto.*;
+import com.example.projectemailmarketingbe.model.TemplateEntity;
 import com.example.projectemailmarketingbe.service.TemplateService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +15,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TemplateController {
     private final TemplateService templateService;
-    @GetMapping("/")
-    public ResponseEntity<ResponseBodyDto<List<TemplateDto>>> findAllTemplateByName(@RequestParam("name") String name){
-        ResponseBodyDto<List<TemplateDto>> responseBodyDto = new ResponseBodyDto<>();
-        responseBodyDto.setData(templateService.findAllByName(name));
+    @GetMapping("")
+    public ResponseEntity<ResponseBodyDto<PageResponseDto<TemplateDto>>> findAll(@RequestParam(name = "page", required = false,
+            defaultValue = "1") int page,
+                                                                                @RequestParam(name = "size", required = false,
+                                                                                        defaultValue = "20") int size,
+                                                                                @RequestParam(name = "search"
+                                                                                        , defaultValue = "",
+                                                                                        required = false) String search) {
+        ResponseBodyDto<PageResponseDto<TemplateDto>> responseBodyDto = new ResponseBodyDto<>();
+        responseBodyDto.setData(templateService.findAllTemplateWithPagingAndSearch(search, page - 1, size));
         responseBodyDto.setStatusCode(200);
         return ResponseEntity.ok(responseBodyDto);
     }
@@ -31,10 +38,25 @@ public class TemplateController {
     }
 
     @DeleteMapping("/{templateId}")
-    public ResponseEntity<ResponseBodyDto<TemplateDto>> deleteTemplateById(@PathVariable("templateId") Long templateId) {
+    public ResponseEntity<?> deleteTemplate(@PathVariable("templateId") Long templateId) {
+        templateService.deleteTemplateById(templateId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/template")
+    public ResponseEntity<?> updateTemplate(@RequestBody TemplateEntity templateEntity) {
         ResponseBodyDto<TemplateDto> responseBodyDto = new ResponseBodyDto<>();
+        responseBodyDto.setData(templateService.updateTemplate(templateEntity));
         responseBodyDto.setStatusCode(200);
         return ResponseEntity.ok(responseBodyDto);
+    }
+
+    @PostMapping("/template")
+    public ResponseEntity<?> createTemplate(@RequestBody TemplateDto templateDto){
+        ResponseBodyDto<TemplateDto> responseBodyDto = new ResponseBodyDto<>();
+        responseBodyDto.setData(templateService.createTemplate(templateDto));
+        responseBodyDto.setStatusCode(201);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseBodyDto);
     }
 
 }
