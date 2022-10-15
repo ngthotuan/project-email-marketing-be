@@ -11,6 +11,7 @@ public class ProxyMapperImpl implements ProxyMapper {
     public ProxyRpDto proxyEntityToProxyRpDto(ProxyEntity proxyEntity) {
         return ProxyRpDto.builder()
                 .id(proxyEntity.getProxyId())
+                .password(proxyEntity.getPassword())
                 .host(proxyEntity.getHost())
                 .port(proxyEntity.getPort())
                 .username(proxyEntity.getUsername())
