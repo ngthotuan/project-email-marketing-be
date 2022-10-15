@@ -16,5 +16,4 @@ public class EmailRpDto {
     private String proxyUsername;
     private String host;
     private String port;
-    private String type;
 }

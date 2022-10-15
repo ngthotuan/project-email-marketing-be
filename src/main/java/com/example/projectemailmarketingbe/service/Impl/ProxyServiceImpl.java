@@ -68,7 +68,6 @@ public class ProxyServiceImpl implements ProxyService {
         proxyByIdReturnEntity.setName(proxyUpdateDto.getName());
         proxyByIdReturnEntity.setPort(proxyUpdateDto.getPort());
         proxyByIdReturnEntity.setUsername(proxyUpdateDto.getUsername());
-        proxyByIdReturnEntity.setType(proxyUpdateDto.getType());
 
 
         return proxyMapper.proxyEntityToProxyRpDto(proxyByIdReturnEntity);
