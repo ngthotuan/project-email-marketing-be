@@ -27,7 +27,7 @@ public class StatisticServiceImpl implements StatisticService {
                 .schedule(scheduleRepository.count())
                 .proxy(proxyRepository.count())
                 .email(emailRepository.count())
-                .template(emailRepository.count())
+                .template(templateRepository.count())
                 .build();
     }
 }
