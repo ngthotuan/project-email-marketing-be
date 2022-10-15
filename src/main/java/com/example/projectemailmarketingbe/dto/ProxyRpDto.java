@@ -10,11 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProxyRpDto {
-    private Long Id;
+    private Long id;
     private String name;
     private String username;
     private String password;
     private String host;
     private String port;
-    private String type;
 }

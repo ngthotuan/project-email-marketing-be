@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class TemplateDto {
-    private Long Id;
+    private Long id;
     private String name;
     private String subject;
     private String content;

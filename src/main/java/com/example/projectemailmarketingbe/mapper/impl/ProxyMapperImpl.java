@@ -10,7 +10,7 @@ public class ProxyMapperImpl implements ProxyMapper {
     @Override
     public ProxyRpDto proxyEntityToProxyRpDto(ProxyEntity proxyEntity) {
         return ProxyRpDto.builder()
-                .Id(proxyEntity.getProxyId())
+                .id(proxyEntity.getProxyId())
                 .host(proxyEntity.getHost())
                 .port(proxyEntity.getPort())
                 .username(proxyEntity.getUsername())
@@ -22,7 +22,7 @@ public class ProxyMapperImpl implements ProxyMapper {
     public ProxyEntity proxyRpDtoToProxyEntity(ProxyRpDto proxyRpDto) {
         return ProxyEntity.builder()
                 .host(proxyRpDto.getHost())
-                .port(proxyRpDto.getPassword())
+                .port(proxyRpDto.getPort())
                 .password(proxyRpDto.getPassword())
                 .name(proxyRpDto.getName())
                 .username(proxyRpDto.getUsername())

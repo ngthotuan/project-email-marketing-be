@@ -46,8 +46,7 @@ public class GlobalConfig {
     }
 
     @Bean
-    public JavaMailSender getJavaMailSender(){
+    public JavaMailSenderImpl getJavaMailSender(){
         return new JavaMailSenderImpl();
     }
-
 }
