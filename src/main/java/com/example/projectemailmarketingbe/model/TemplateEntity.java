@@ -1,6 +1,7 @@
 package com.example.projectemailmarketingbe.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class TemplateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
