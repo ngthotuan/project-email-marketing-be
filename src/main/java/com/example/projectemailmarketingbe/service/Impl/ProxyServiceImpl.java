@@ -5,10 +5,14 @@ import com.example.projectemailmarketingbe.dto.ProxyRpDto;
 import com.example.projectemailmarketingbe.dto.ProxyUpdateDto;
 import com.example.projectemailmarketingbe.exception.NotFoundException;
 import com.example.projectemailmarketingbe.mapper.ProxyMapper;
+import com.example.projectemailmarketingbe.model.EmailEntity;
 import com.example.projectemailmarketingbe.model.ProxyEntity;
 import com.example.projectemailmarketingbe.repository.ProxyRepository;
 import com.example.projectemailmarketingbe.service.ProxyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +35,21 @@ public class ProxyServiceImpl implements ProxyService {
 
     @Override
     public PageResponseDto<ProxyRpDto> findAllProxyWithPagingAndSearch(String search, int page, int size) {
-        return null;
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProxyEntity> pageEmail = search.isBlank()
+                ? proxyRepository.findAll(pageable)
+                : proxyRepository.findAll(search, pageable);
+        PageResponseDto pageResponseDto = PageResponseDto
+                .builder()
+                .page(page)
+                .size(size)
+                .totalPages(pageEmail.getTotalPages())
+                .totalElements(pageEmail.getTotalElements())
+                .elements(pageEmail.stream()
+                        .map(proxyMapper::proxyEntityToProxyRpDto)
+                        .collect(Collectors.toList()))
+                .build();
+        return pageResponseDto;
     }
 
     @Override
