@@ -11,6 +11,8 @@ import java.util.UUID;
 public interface EmailService {
     PageResponseDto<EmailRpDto> findAll(String search, int page, int size);
 
+    List<EmailRpDto> findAll();
+
     EmailRpDto findByEmail(String email);
 
     EmailRpDto addNewEmail(EmailDto emailDto);

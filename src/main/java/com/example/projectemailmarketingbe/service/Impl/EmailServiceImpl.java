@@ -48,6 +48,12 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    public List<EmailRpDto> findAll() {
+        return emailRepository.findAll().stream().map(emailMapper
+        ::emailToEmailDto).collect(Collectors.toList());
+    }
+
+    @Override
     public EmailRpDto findByEmail(String email) {
         EmailEntity emailInDb = emailRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(String.format("%s not found", email)));

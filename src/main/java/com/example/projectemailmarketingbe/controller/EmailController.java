@@ -29,6 +29,14 @@ public class EmailController {
         return ResponseEntity.ok(responseBodyDto);
     }
 
+    @GetMapping("/")
+    public ResponseEntity<ResponseBodyDto<List<EmailRpDto>>> findAll() {
+        ResponseBodyDto<List<EmailRpDto>> responseBodyDto = new ResponseBodyDto<>();
+        responseBodyDto.setData(emailService.findAll());
+        responseBodyDto.setStatusCode(200);
+        return ResponseEntity.ok(responseBodyDto);
+    }
+
     @GetMapping("/{email}")
     public ResponseEntity<ResponseBodyDto<EmailRpDto>> findTemplateById(@PathVariable("email") String email) {
         ResponseBodyDto<EmailRpDto> responseBodyDto = new ResponseBodyDto<>();
