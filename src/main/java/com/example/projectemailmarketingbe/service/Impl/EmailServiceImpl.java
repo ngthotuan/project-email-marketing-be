@@ -96,7 +96,7 @@ public class EmailServiceImpl implements EmailService {
                         .password(emailWithProxyDto.getPasswordProxy())
                         .port(emailWithProxyDto.getPort())
                         .username(emailWithProxyDto.getUsername())
-                        .type(emailWithProxyDto.getType()).build()
+                        .build()
 
                 ).build()).collect(Collectors.toList());
         for (EmailEntity emailEntity : emailEntities) {
@@ -104,6 +104,11 @@ public class EmailServiceImpl implements EmailService {
             result.add(save);
         }
         return result.stream().map(emailMapper::emailToEmailDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public void sendMail() {
+
     }
 
 

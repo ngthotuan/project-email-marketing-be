@@ -22,7 +22,6 @@ public class ProxyEntity {
     private String password;
     private String host;
     private String port;
-    private String type;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proxyEntity")
     private List<EmailEntity> emailEntities;
 }

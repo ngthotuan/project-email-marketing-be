@@ -10,6 +10,7 @@ public class TemplateMapperImpl implements TemplateMapper {
     @Override
     public TemplateDto templateEntityToTemplateDto(TemplateEntity templateEntity) {
         return TemplateDto.builder()
+                .Id(templateEntity.getTemplateId())
                 .name(templateEntity.getName())
                 .content(templateEntity.getContent())
                 .subject(templateEntity.getSubject())

@@ -22,4 +22,6 @@ public interface EmailService {
     EmailRpDto updateEmail(EmailDto emailDto);
 
     List<EmailRpDto> addEmailsAndProxy(List<EmailWithProxyDto> emailWithProxyDtos);
+
+    void sendMail();
 }
