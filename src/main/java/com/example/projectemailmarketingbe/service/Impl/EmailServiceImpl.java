@@ -32,6 +32,7 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 import static com.example.projectemailmarketingbe.constant.MessageConstant.SEND_MAIL_LOG;
+import static com.example.projectemailmarketingbe.constant.MessageConstant.USER_NOT_FOUND;
 
 @Service
 @Slf4j
@@ -152,6 +153,12 @@ public class EmailServiceImpl implements EmailService {
             log.info(SEND_MAIL_LOG, email);
         }
 
+    }
+
+    @Override
+    public EmailEntity findEmailByIdReturnEntity(Long emailId) {
+        return emailRepository.findById(emailId).orElseThrow(
+                () -> new NotFoundException(USER_NOT_FOUND));
     }
 
 

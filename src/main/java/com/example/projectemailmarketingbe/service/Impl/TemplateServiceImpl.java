@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +50,7 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
+    @Transactional
     public TemplateDto updateTemplate(TemplateEntity templateEntity) {
         TemplateEntity entity = findByIdRPEntity(templateEntity.getId());
         return templateMapper.templateEntityToTemplateDto(templateRepository.save(templateEntity));
@@ -72,7 +74,8 @@ public class TemplateServiceImpl implements TemplateService {
         return templateMapper.templateEntityToTemplateDto(templateEntity);
     }
 
-    private TemplateEntity findByIdRPEntity(Long proxyId) {
+    @Override
+    public TemplateEntity findByIdRPEntity(Long proxyId) {
         return templateRepository.findById(proxyId).orElseThrow(
                 () -> new NotFoundException(TEMPLATE_NOT_FOUND));
     }

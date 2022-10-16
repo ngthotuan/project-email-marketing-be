@@ -1,8 +1,6 @@
 package com.example.projectemailmarketingbe.service;
 
 import com.example.projectemailmarketingbe.dto.PageResponseDto;
-import com.example.projectemailmarketingbe.dto.ProxyRpDto;
-import com.example.projectemailmarketingbe.dto.ProxyUpdateDto;
 import com.example.projectemailmarketingbe.dto.TemplateDto;
 import com.example.projectemailmarketingbe.model.TemplateEntity;
 
@@ -21,4 +19,6 @@ public interface TemplateService {
     void deleteTemplateById(Long templateId);
 
     TemplateDto findById(Long templateId);
+
+    TemplateEntity findByIdRPEntity(Long proxyId);
 }

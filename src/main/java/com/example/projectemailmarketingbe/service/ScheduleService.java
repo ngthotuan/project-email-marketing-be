@@ -1,6 +1,7 @@
 package com.example.projectemailmarketingbe.service;
 
 import com.example.projectemailmarketingbe.dto.ScheduleDto;
+import com.example.projectemailmarketingbe.model.ScheduleEntity;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface ScheduleService {
     List<ScheduleDto> findAll();
 
     ScheduleDto updateSchedule(ScheduleDto scheduleDto);
+
+    ScheduleEntity findById(Long scheduleId);
 }

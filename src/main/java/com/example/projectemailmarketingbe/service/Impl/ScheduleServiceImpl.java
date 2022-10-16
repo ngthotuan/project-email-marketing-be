@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.projectemailmarketingbe.constant.MessageConstant.SCHEDULE_NOT_FOUND;
+
 /**
  * Created by ngthotuan on 15/10/2022
  */
@@ -38,5 +40,10 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .orElseThrow(() -> new NotFoundException(String.format("Not found schedule with id: %s", scheduleDto.getId())));
         BeanUtils.copyProperties(scheduleDto, entity);
         return modelMapper.map(scheduleRepository.save(entity), ScheduleDto.class);
+    }
+
+    @Override
+    public ScheduleEntity findById(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId).orElseThrow(() -> new NotFoundException(SCHEDULE_NOT_FOUND));
     }
 }

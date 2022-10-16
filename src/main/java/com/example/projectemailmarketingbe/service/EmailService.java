@@ -4,6 +4,8 @@ import com.example.projectemailmarketingbe.dto.EmailDto;
 import com.example.projectemailmarketingbe.dto.EmailRpDto;
 import com.example.projectemailmarketingbe.dto.EmailWithProxyDto;
 import com.example.projectemailmarketingbe.dto.PageResponseDto;
+import com.example.projectemailmarketingbe.model.EmailEntity;
+import com.example.projectemailmarketingbe.model.ProxyEntity;
 import com.example.projectemailmarketingbe.model.ScheduleCronjobRunEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -28,4 +30,6 @@ public interface EmailService {
     JavaMailSender createJavaMailSender(ScheduleCronjobRunEntity scheduleCronjobRunEntity);
 
     void sendMail(ScheduleCronjobRunEntity scheduleCronjobRunEntity) throws MessagingException;
+
+    EmailEntity findEmailByIdReturnEntity(Long emailId);
 }

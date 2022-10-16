@@ -9,4 +9,6 @@ public class MessageConstant {
             + "is configured to run with {} cron expression";
     public static String SEND_MAIL_LOG = "Sent mail to email {}";
     public static String RESTART_SCHEDULE = "SCHEDULER IS RESTARTING";
+    public static String SCHEDULE_NOT_FOUND = "Schedule with id {} not found";
+    public static String SCHEDULE_CRONJOB_RUN_NOT_FOUND = "Schedule cron job run with id {} not found";
 }
