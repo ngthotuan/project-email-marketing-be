@@ -18,4 +18,5 @@ public class StatisticDto {
     private long email;
     private long proxy;
     private long template;
+    private long scheduleCron;
 }

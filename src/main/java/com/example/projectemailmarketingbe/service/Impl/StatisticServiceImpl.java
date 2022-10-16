@@ -1,10 +1,7 @@
 package com.example.projectemailmarketingbe.service.Impl;
 
 import com.example.projectemailmarketingbe.dto.StatisticDto;
-import com.example.projectemailmarketingbe.repository.EmailRepository;
-import com.example.projectemailmarketingbe.repository.ProxyRepository;
-import com.example.projectemailmarketingbe.repository.ScheduleRepository;
-import com.example.projectemailmarketingbe.repository.TemplateRepository;
+import com.example.projectemailmarketingbe.repository.*;
 import com.example.projectemailmarketingbe.service.StatisticService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +17,7 @@ public class StatisticServiceImpl implements StatisticService {
     private final TemplateRepository templateRepository;
     private final ProxyRepository proxyRepository;
     private final ScheduleRepository scheduleRepository;
+    private final ScheduleCronjobRepository scheduleCronjobRepository;
 
     @Override
     public StatisticDto count() {
@@ -28,6 +26,7 @@ public class StatisticServiceImpl implements StatisticService {
                 .proxy(proxyRepository.count())
                 .email(emailRepository.count())
                 .template(templateRepository.count())
+                .scheduleCron(scheduleCronjobRepository.count())
                 .build();
     }
 }
