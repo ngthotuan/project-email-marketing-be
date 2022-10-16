@@ -18,7 +18,7 @@ import javax.persistence.Id;
 public class TemplateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long templateId;
+    private Long id;
     private String name;
     private String subject;
     private String content;
