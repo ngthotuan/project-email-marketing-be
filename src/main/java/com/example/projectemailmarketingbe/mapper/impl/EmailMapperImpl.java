@@ -14,8 +14,9 @@ public class EmailMapperImpl implements EmailMapper {
                 .email(emailEntity.getEmail())
                 .password(emailEntity.getPassword())
                 .proxyName(emailEntity.getProxyEntity() != null ? emailEntity.getProxyEntity().getName() : "")
-                .host(emailEntity.getProxyEntity() != null ? emailEntity.getProxyEntity().getHost() : "")
-                .port(emailEntity.getProxyEntity() != null ? emailEntity.getProxyEntity().getPort() : "")
+                .proxyHost(emailEntity.getProxyEntity() != null ? emailEntity.getProxyEntity().getHost() : "")
+                .proxyPort(emailEntity.getProxyEntity() != null ? emailEntity.getProxyEntity().getPort() : "")
+                .proxyId(emailEntity.getProxyEntity().getProxyId())
                 .build();
     }
 }

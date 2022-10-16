@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmailDto {
+    private Long proxyId;
     private String email;
     private String password;
 }

@@ -10,7 +10,9 @@ import com.example.projectemailmarketingbe.model.EmailEntity;
 import com.example.projectemailmarketingbe.model.ProxyEntity;
 import com.example.projectemailmarketingbe.model.ScheduleCronjobRunEntity;
 import com.example.projectemailmarketingbe.repository.EmailRepository;
+import com.example.projectemailmarketingbe.repository.ProxyRepository;
 import com.example.projectemailmarketingbe.service.EmailService;
+import com.example.projectemailmarketingbe.service.ProxyService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +43,7 @@ public class EmailServiceImpl implements EmailService {
     private final EmailRepository emailRepository;
     private final EmailMapper emailMapper;
     private final JavaMailSenderImpl javaMailSender;
+    private final ProxyService proxyService;
 
     @Override
     public PageResponseDto<EmailRpDto> findAll(String search, int page, int size) {
@@ -94,6 +97,8 @@ public class EmailServiceImpl implements EmailService {
                 .orElseThrow(() -> new NotFoundException(String.format("%s not found", email)));
         emailInDb.setEmail(email.getEmail());
         emailInDb.setPassword(email.getPassword());
+        ProxyEntity proxyByIdReturnEntity = proxyService.findProxyByIdReturnEntity(email.getProxyId());
+        emailInDb.setProxyEntity(proxyByIdReturnEntity);
         return emailMapper.emailToEmailDto(emailInDb);
     }
 
