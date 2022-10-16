@@ -30,4 +30,6 @@ public class ScheduleCronjobRunEntity {
     @ManyToOne
     @JoinColumn(name = "template_id")
     private TemplateEntity templateEntity;
+
+    private Boolean enable = Boolean.TRUE;
 }

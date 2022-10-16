@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @Validated
 @ConfigurationProperties(prefix = "thread.pool")
 public class ThreadPoolParam {
-
     @NotNull
     Integer size;
 }

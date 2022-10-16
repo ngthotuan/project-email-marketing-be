@@ -9,6 +9,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
@@ -36,7 +37,13 @@ public class GeneralTaskScheduler {
     }
 
     private ScheduledFuture<?> scheduleSendNotification(ScheduleCronjobRunEntity scheduleCronjobRunEntity, AbstractNotificationScheduledTask scheduledTask) {
-        return taskScheduler.schedule(() -> scheduledTask.sendNotificationToUser(scheduleCronjobRunEntity),
+        return taskScheduler.schedule(() -> {
+                    try {
+                        scheduledTask.sendNotificationToUser(scheduleCronjobRunEntity);
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
+                },
                 triggerContext -> {
                     var cronExpression = scheduleCronjobRunEntity.getScheduleEntity().getCron();
                     log.info(CRON_EXPRESSION_CONFIG_MESSAGE, cronExpression);
