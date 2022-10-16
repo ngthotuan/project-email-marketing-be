@@ -4,9 +4,11 @@ import com.example.projectemailmarketingbe.dto.EmailDto;
 import com.example.projectemailmarketingbe.dto.EmailRpDto;
 import com.example.projectemailmarketingbe.dto.EmailWithProxyDto;
 import com.example.projectemailmarketingbe.dto.PageResponseDto;
+import com.example.projectemailmarketingbe.model.ScheduleCronjobRunEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 
+import javax.mail.MessagingException;
 import java.util.List;
-import java.util.UUID;
 
 public interface EmailService {
     PageResponseDto<EmailRpDto> findAll(String search, int page, int size);
@@ -23,5 +25,7 @@ public interface EmailService {
 
     List<EmailRpDto> addEmailsAndProxy(List<EmailWithProxyDto> emailWithProxyDtos);
 
-    void sendMail();
+    JavaMailSender createJavaMailSender(ScheduleCronjobRunEntity scheduleCronjobRunEntity);
+
+    void sendMail(ScheduleCronjobRunEntity scheduleCronjobRunEntity) throws MessagingException;
 }
