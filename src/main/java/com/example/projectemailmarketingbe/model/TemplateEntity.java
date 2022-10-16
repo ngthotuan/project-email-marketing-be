@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +18,6 @@ public class TemplateEntity {
     private Long id;
     private String name;
     private String subject;
+    @Column(columnDefinition = "LONGTEXT")
     private String content;
 }
