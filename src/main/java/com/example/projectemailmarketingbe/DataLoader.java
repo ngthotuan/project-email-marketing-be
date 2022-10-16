@@ -2,9 +2,11 @@ package com.example.projectemailmarketingbe;
 
 import com.example.projectemailmarketingbe.dto.UserRegisterDto;
 import com.example.projectemailmarketingbe.model.EmailEntity;
+import com.example.projectemailmarketingbe.model.ProxyEntity;
 import com.example.projectemailmarketingbe.model.ScheduleEntity;
 import com.example.projectemailmarketingbe.model.UserEntity;
 import com.example.projectemailmarketingbe.repository.EmailRepository;
+import com.example.projectemailmarketingbe.repository.ProxyRepository;
 import com.example.projectemailmarketingbe.repository.ScheduleRepository;
 import com.example.projectemailmarketingbe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +32,8 @@ public class DataLoader implements ApplicationRunner {
 
     private final UserRepository userRepository;
     private final EmailRepository emailRepository;
-
     private final ScheduleRepository scheduleRepository;
+    private final ProxyRepository proxyRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -72,6 +74,23 @@ public class DataLoader implements ApplicationRunner {
             scheduleRepository.save(new ScheduleEntity(1L, "Run every minute", "0 0/1 * * * ?"));
             scheduleRepository.save(new ScheduleEntity(2L, "At 9:30", "0 30 9 * * ?"));
             scheduleRepository.save(new ScheduleEntity(3L, "At 12:00 AM, only on Sunday and Saturday", "0 0 0 ? * SUN,SAT"));
+        }
+
+        // init proxy
+        if (proxyRepository.count() == 0) {
+            log.info("init proxy");
+            List<ProxyEntity> proxyEntities = LongStream.range(0, 100)
+                    .mapToObj(i -> {
+                        ProxyEntity proxyEntity = new ProxyEntity();
+                        proxyEntity.setName(RandomString.make());
+                        proxyEntity.setHost(RandomString.make());
+                        proxyEntity.setPort(String.format("%06d", i));
+                        proxyEntity.setUsername(RandomString.make());
+                        proxyEntity.setPassword(RandomString.make());
+                        return proxyEntity;
+                    })
+                    .collect(Collectors.toList());
+            proxyRepository.saveAll(proxyEntities);
         }
     }
 }

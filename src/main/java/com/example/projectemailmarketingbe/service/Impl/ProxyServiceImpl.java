@@ -5,7 +5,6 @@ import com.example.projectemailmarketingbe.dto.ProxyRpDto;
 import com.example.projectemailmarketingbe.dto.ProxyUpdateDto;
 import com.example.projectemailmarketingbe.exception.NotFoundException;
 import com.example.projectemailmarketingbe.mapper.ProxyMapper;
-import com.example.projectemailmarketingbe.model.EmailEntity;
 import com.example.projectemailmarketingbe.model.ProxyEntity;
 import com.example.projectemailmarketingbe.repository.ProxyRepository;
 import com.example.projectemailmarketingbe.service.ProxyService;
@@ -15,10 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
 
 import static com.example.projectemailmarketingbe.constant.MessageConstant.PROXY_NOT_FOUND;
 
@@ -62,7 +60,7 @@ public class ProxyServiceImpl implements ProxyService {
     @Override
     @Transactional
     public ProxyRpDto updateProxy(ProxyUpdateDto proxyUpdateDto) {
-        ProxyEntity proxyByIdReturnEntity = findProxyByIdReturnEntity(proxyUpdateDto.getProxyId());
+        ProxyEntity proxyByIdReturnEntity = findProxyByIdReturnEntity(proxyUpdateDto.getId());
         proxyByIdReturnEntity.setHost(proxyUpdateDto.getHost());
         proxyByIdReturnEntity.setPassword(proxyUpdateDto.getPassword());
         proxyByIdReturnEntity.setName(proxyUpdateDto.getName());

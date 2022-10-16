@@ -50,7 +50,7 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Override
     public TemplateDto updateTemplate(TemplateEntity templateEntity) {
-        TemplateEntity entity = findByIdRPEntity(templateEntity.getTemplateId());
+        TemplateEntity entity = findByIdRPEntity(templateEntity.getId());
         return templateMapper.templateEntityToTemplateDto(templateRepository.save(templateEntity));
     }
 
