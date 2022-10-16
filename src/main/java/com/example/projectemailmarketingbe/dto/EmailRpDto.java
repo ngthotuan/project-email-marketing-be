@@ -15,6 +15,7 @@ public class EmailRpDto {
     private Long proxyId;
     private String proxyName;
     private String proxyUsername;
+    private String proxyPassword;
     private String proxyHost;
     private String proxyPort;
 }
