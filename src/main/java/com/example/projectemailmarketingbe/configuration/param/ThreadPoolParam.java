@@ -1,4 +1,4 @@
-package com.example.projectemailmarketingbe;
+package com.example.projectemailmarketingbe.configuration.param;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

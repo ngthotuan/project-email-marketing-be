@@ -1,6 +1,6 @@
 package com.example.projectemailmarketingbe.configuration;
 
-import com.example.projectemailmarketingbe.ThreadPoolParam;
+import com.example.projectemailmarketingbe.configuration.param.ThreadPoolParam;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

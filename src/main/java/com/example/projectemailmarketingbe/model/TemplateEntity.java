@@ -18,6 +18,6 @@ public class TemplateEntity {
     private Long id;
     private String name;
     private String subject;
-    @Column(columnDefinition = "LONGTEXT")
+    @Lob
     private String content;
 }

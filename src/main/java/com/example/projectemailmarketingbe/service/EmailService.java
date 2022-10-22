@@ -25,11 +25,13 @@ public interface EmailService {
 
     EmailRpDto updateEmail(EmailDto emailDto);
 
-    List<EmailRpDto> addEmailsAndProxy(List<EmailWithProxyDto> emailWithProxyDtos);
+    List<EmailRpDto> addEmailsAndProxy(List<EmailDto> emailDtos);
 
     JavaMailSender createJavaMailSender(ScheduleCronjobRunEntity scheduleCronjobRunEntity);
 
     void sendMail(ScheduleCronjobRunEntity scheduleCronjobRunEntity) throws MessagingException;
 
     EmailEntity findEmailByIdReturnEntity(Long emailId);
+
+    EmailEntity findEmailByEmailReturnEntity(String email);
 }

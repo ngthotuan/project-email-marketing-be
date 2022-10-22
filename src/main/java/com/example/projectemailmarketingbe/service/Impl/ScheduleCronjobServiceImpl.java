@@ -64,7 +64,7 @@ public class ScheduleCronjobServiceImpl implements ScheduleCronjobService {
     @Transactional
     public ScheduleCronjobRpDto updateProxy(ScheduleCronjobDto scheduleCronjobDto) {
         TemplateEntity templateEntity = templateService.findByIdRPEntity(scheduleCronjobDto.getTemplateId());
-        EmailEntity emailEntity = emailService.findEmailByIdReturnEntity(scheduleCronjobDto.getEmailId());
+        EmailEntity emailEntity = emailService.findEmailByEmailReturnEntity(scheduleCronjobDto.getEmail());
         ScheduleEntity scheduleEntity = scheduleService.findById(scheduleCronjobDto.getScheduleId());
         ScheduleCronjobRunEntity scheduleCronjobRunEntity = scheduleCronjobRepository.findById(scheduleCronjobDto.getScheduleCronjobId()).orElseThrow(() -> new NotFoundException(SCHEDULE_CRONJOB_RUN_NOT_FOUND));
         scheduleCronjobRunEntity.setScheduleEntity(scheduleEntity);
@@ -89,7 +89,7 @@ public class ScheduleCronjobServiceImpl implements ScheduleCronjobService {
     @Override
     public ScheduleCronjobRpDto addScheduleCronjob(ScheduleCronjobDto scheduleCronjobDto) {
         TemplateEntity templateEntity = templateService.findByIdRPEntity(scheduleCronjobDto.getTemplateId());
-        EmailEntity emailEntity = emailService.findEmailByIdReturnEntity(scheduleCronjobDto.getEmailId());
+        EmailEntity emailEntity = emailService.findEmailByEmailReturnEntity(scheduleCronjobDto.getEmail());
         ScheduleEntity scheduleEntity = scheduleService.findById(scheduleCronjobDto.getScheduleId());
         ScheduleCronjobRunEntity scheduleCronjobRunEntity = new ScheduleCronjobRunEntity();
         scheduleCronjobRunEntity.setScheduleEntity(scheduleEntity);

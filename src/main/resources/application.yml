@@ -15,6 +15,9 @@ spring:
       path: /h2
       settings:
         web-allow-others: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 com:
   example:
     demo:
@@ -27,6 +30,6 @@ server:
   servlet:
     context-path: /email-service/v1
 cron:
-  reschedule: ${RESCHEDULE_TASK_CRON_EXPRESSION:0 0/10 * * * *}
+  reschedule: ${RESCHEDULE_TASK_CRON_EXPRESSION:0/10 * * * * *}
 thread.pool:
   size: ${THREAD_POOL_SIZE:5}

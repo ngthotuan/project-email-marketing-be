@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ScheduleCronjobDto {
     private Long scheduleCronjobId;
-    private Long emailId;
+    private String email;
     private Long templateId;
     private Long scheduleId;
     private String emailTos;

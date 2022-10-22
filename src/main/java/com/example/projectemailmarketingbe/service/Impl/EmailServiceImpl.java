@@ -79,7 +79,11 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public EmailRpDto addNewEmail(EmailDto email) {
-        EmailEntity save = emailRepository.save(EmailEntity.builder().email(email.getEmail()).password(email.getPassword()).build());
+        ProxyEntity proxyByIdReturnEntity = proxyService.findProxyByIdReturnEntity(email.getProxyId());
+        EmailEntity save = emailRepository.save(EmailEntity.builder()
+                .email(email.getEmail())
+                .password(email.getPassword())
+                .proxyEntity(proxyByIdReturnEntity).build());
         return emailMapper.emailToEmailDto(save);
     }
 
@@ -104,18 +108,12 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     @Transactional
-    public List<EmailRpDto> addEmailsAndProxy(List<EmailWithProxyDto> emailWithProxyDtos) {
+    public List<EmailRpDto> addEmailsAndProxy(List<EmailDto> emailDtos) {
         List<EmailEntity> result = new ArrayList<>();
-        List<EmailEntity> emailEntities = emailWithProxyDtos.stream().map(emailWithProxyDto -> EmailEntity.builder()
-                .email(emailWithProxyDto.getEmail())
-                .password(emailWithProxyDto.getPasswordEmail())
-                .proxyEntity(ProxyEntity.builder()
-                        .host(emailWithProxyDto.getHost())
-                        .name(emailWithProxyDto.getProxyName())
-                        .password(emailWithProxyDto.getPasswordProxy())
-                        .port(emailWithProxyDto.getPort())
-                        .username(emailWithProxyDto.getUsername())
-                        .build()
+        List<EmailEntity> emailEntities = emailDtos.stream().map(emailDto -> EmailEntity.builder()
+                .email(emailDto.getEmail())
+                .password(emailDto.getPassword())
+                .proxyEntity(proxyService.findProxyByIdReturnEntity(emailDto.getProxyId())
                 ).build()).collect(Collectors.toList());
         for (EmailEntity emailEntity : emailEntities) {
             EmailEntity save = emailRepository.save(emailEntity);
@@ -163,6 +161,12 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public EmailEntity findEmailByIdReturnEntity(Long emailId) {
         return emailRepository.findById(emailId).orElseThrow(
+                () -> new NotFoundException(USER_NOT_FOUND));
+    }
+
+    @Override
+    public EmailEntity findEmailByEmailReturnEntity(String email) {
+        return emailRepository.findByEmail(email).orElseThrow(
                 () -> new NotFoundException(USER_NOT_FOUND));
     }
 
