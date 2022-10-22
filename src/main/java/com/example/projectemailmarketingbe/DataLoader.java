@@ -99,7 +99,7 @@ public class DataLoader implements ApplicationRunner {
                             .emailEntity(emailRepository.findById(i + 1).get())
                             .templateEntity(templateRepository.findById(i + 1).get())
                             .scheduleEntity(scheduleRepository.findById(i % 3 + 1).get())
-                            .emailTo(LongStream.range(0, new Random().nextInt(4))
+                            .emailTo(LongStream.range(1, new Random().nextInt(5))
                                     .mapToObj(j -> RandomString.make() + "@gmail.com")
                                     .collect(Collectors.joining(",")))
                             .enable(true)
