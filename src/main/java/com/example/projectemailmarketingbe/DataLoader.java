@@ -1,14 +1,8 @@
 package com.example.projectemailmarketingbe;
 
 import com.example.projectemailmarketingbe.dto.UserRegisterDto;
-import com.example.projectemailmarketingbe.model.EmailEntity;
-import com.example.projectemailmarketingbe.model.ProxyEntity;
-import com.example.projectemailmarketingbe.model.ScheduleEntity;
-import com.example.projectemailmarketingbe.model.UserEntity;
-import com.example.projectemailmarketingbe.repository.EmailRepository;
-import com.example.projectemailmarketingbe.repository.ProxyRepository;
-import com.example.projectemailmarketingbe.repository.ScheduleRepository;
-import com.example.projectemailmarketingbe.repository.UserRepository;
+import com.example.projectemailmarketingbe.model.*;
+import com.example.projectemailmarketingbe.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
@@ -19,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -34,6 +29,8 @@ public class DataLoader implements ApplicationRunner {
     private final EmailRepository emailRepository;
     private final ScheduleRepository scheduleRepository;
     private final ProxyRepository proxyRepository;
+    private final TemplateRepository templateRepository;
+    private final ScheduleCronjobRepository scheduleCronjobRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -79,6 +76,36 @@ public class DataLoader implements ApplicationRunner {
                             .build()
                     ).collect(Collectors.toList());
             emailRepository.saveAll(emailsWithProxy);
+        }
+
+        // init template
+        if (templateRepository.count() == 0) {
+            log.info("init template");
+            List<TemplateEntity> templates = LongStream.range(0, 100)
+                    .mapToObj(i -> TemplateEntity.builder()
+                            .name(RandomString.make())
+                            .subject(RandomString.make())
+                            .content(RandomString.make())
+                            .build()
+                    ).collect(Collectors.toList());
+            templateRepository.saveAll(templates);
+        }
+
+        // init schedule cronjob
+        if (scheduleCronjobRepository.count() == 0) {
+            log.info("init schedule cronjob");
+            List<ScheduleCronjobRunEntity> scheduleCronjobRunEntities = LongStream.range(0, 100)
+                    .mapToObj(i -> ScheduleCronjobRunEntity.builder()
+                            .emailEntity(emailRepository.findById(i + 1).get())
+                            .templateEntity(templateRepository.findById(i + 1).get())
+                            .scheduleEntity(scheduleRepository.findById(i % 3 + 1).get())
+                            .emailTo(LongStream.range(0, new Random().nextInt(4))
+                                    .mapToObj(j -> RandomString.make() + "@gmail.com")
+                                    .collect(Collectors.joining(",")))
+                            .enable(true)
+                            .build()
+                    ).collect(Collectors.toList());
+            scheduleCronjobRepository.saveAll(scheduleCronjobRunEntities);
         }
     }
 }

@@ -11,13 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ScheduleCronjobRpDto {
     private Long id;
-    private String email;
-    private String proxyName;
-    private String proxyHost;
-    private String proxyPort;
-    private String templateName;
-    private String templateSubject;
-    private String scheduleExpression;
+    private EmailRpDto email;
+    private ProxyRpDto proxy;
+    private TemplateRpDto template;
+    private ScheduleRpDto schedule;
     private String emailTos;
     private Boolean enable;
 }

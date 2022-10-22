@@ -1,24 +1,28 @@
 package com.example.projectemailmarketingbe.mapper.impl;
 
 import com.example.projectemailmarketingbe.dto.ScheduleCronjobRpDto;
-import com.example.projectemailmarketingbe.mapper.ScheduleCronjobMapper;
+import com.example.projectemailmarketingbe.mapper.*;
 import com.example.projectemailmarketingbe.model.ScheduleCronjobRunEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ScheduleCronjobMapperImpl implements ScheduleCronjobMapper {
+    private final EmailMapper emailMapper;
+    private final ProxyMapper proxyMapper;
+    private final TemplateMapper templateMapper;
+    private final ScheduleMapper scheduleMapper;
+
     @Override
     public ScheduleCronjobRpDto ScheduleCronjobRunEntityToRpDto(ScheduleCronjobRunEntity scheduleCronjobRunEntity) {
         return ScheduleCronjobRpDto.builder()
                 .id(scheduleCronjobRunEntity.getId())
-                .email(scheduleCronjobRunEntity.getEmailEntity().getEmail())
-                .proxyHost(scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getHost())
-                .proxyName(scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getName())
-                .proxyPort(scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getPort())
-                .templateName(scheduleCronjobRunEntity.getTemplateEntity().getName())
-                .templateSubject(scheduleCronjobRunEntity.getTemplateEntity().getSubject())
+                .email(emailMapper.emailToEmailDto(scheduleCronjobRunEntity.getEmailEntity()))
+                .proxy(proxyMapper.proxyEntityToProxyRpDto(scheduleCronjobRunEntity.getEmailEntity().getProxyEntity()))
+                .template(templateMapper.templateEntityToTemplateRpDto(scheduleCronjobRunEntity.getTemplateEntity()))
+                .schedule(scheduleMapper.scheduleToScheduleDto(scheduleCronjobRunEntity.getScheduleEntity()))
                 .emailTos(scheduleCronjobRunEntity.getEmailTo())
-                .scheduleExpression(scheduleCronjobRunEntity.getScheduleEntity().getCron())
                 .enable(scheduleCronjobRunEntity.getEnable())
                 .build();
     }
