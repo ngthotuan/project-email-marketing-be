@@ -54,20 +54,6 @@ public class DataLoader implements ApplicationRunner {
             userRepository.save(user);
         }
 
-        // init email
-        if (emailRepository.count() == 0) {
-            log.info("init email");
-            List<EmailEntity> emails = LongStream.range(0, 100)
-                    .mapToObj(i -> {
-                        EmailEntity email = new EmailEntity();
-                        email.setEmail(RandomString.make() + "@gmail.com");
-                        email.setPassword(RandomString.make());
-                        return email;
-                    })
-                    .collect(Collectors.toList());
-            emailRepository.saveAll(emails);
-        }
-
         // init schedule
         if (scheduleRepository.count() == 0) {
             log.info("init schedule");
@@ -76,21 +62,23 @@ public class DataLoader implements ApplicationRunner {
             scheduleRepository.save(new ScheduleEntity(3L, "At 12:00 AM, only on Sunday and Saturday", "0 0 0 ? * SUN,SAT"));
         }
 
-        // init proxy
-        if (proxyRepository.count() == 0) {
-            log.info("init proxy");
-            List<ProxyEntity> proxyEntities = LongStream.range(0, 100)
-                    .mapToObj(i -> {
-                        ProxyEntity proxyEntity = new ProxyEntity();
-                        proxyEntity.setName(RandomString.make());
-                        proxyEntity.setHost(RandomString.make());
-                        proxyEntity.setPort(String.format("%06d", i));
-                        proxyEntity.setUsername(RandomString.make());
-                        proxyEntity.setPassword(RandomString.make());
-                        return proxyEntity;
-                    })
-                    .collect(Collectors.toList());
-            proxyRepository.saveAll(proxyEntities);
+        // init proxy vs email
+        if (proxyRepository.count() == 0 && emailRepository.count() == 0) {
+            log.info("init proxy vs email");
+            List<EmailEntity> emailsWithProxy = LongStream.range(0, 100)
+                    .mapToObj(i -> EmailEntity.builder()
+                            .email(RandomString.make() + "@gmail.com")
+                            .password(RandomString.make())
+                            .proxyEntity(ProxyEntity.builder()
+                                    .name(RandomString.make())
+                                    .host(RandomString.make())
+                                    .port(String.format("%06d", i))
+                                    .username(RandomString.make())
+                                    .password(RandomString.make())
+                                    .build())
+                            .build()
+                    ).collect(Collectors.toList());
+            emailRepository.saveAll(emailsWithProxy);
         }
     }
 }
