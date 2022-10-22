@@ -1,9 +1,6 @@
 package com.example.projectemailmarketingbe.controller;
 
-import com.example.projectemailmarketingbe.dto.PageResponseDto;
-import com.example.projectemailmarketingbe.dto.ResponseBodyDto;
-import com.example.projectemailmarketingbe.dto.TemplateDto;
-import com.example.projectemailmarketingbe.dto.TemplateRpDto;
+import com.example.projectemailmarketingbe.dto.*;
 import com.example.projectemailmarketingbe.model.TemplateEntity;
 import com.example.projectemailmarketingbe.service.TemplateService;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +8,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/templates")
 @RequiredArgsConstructor
 public class TemplateController {
     private final TemplateService templateService;
+
+    @GetMapping("/")
+    public ResponseEntity<?> findAll() {
+        ResponseBodyDto<List<TemplateRpMDto>> responseBodyDto = new ResponseBodyDto<>();
+        responseBodyDto.setData(templateService.findAllTemplate());
+        responseBodyDto.setStatusCode(200);
+        return ResponseEntity.ok(responseBodyDto);
+    }
 
     @GetMapping("")
     public ResponseEntity<ResponseBodyDto<PageResponseDto<TemplateRpDto>>> findAll(@RequestParam(name = "page", required = false,

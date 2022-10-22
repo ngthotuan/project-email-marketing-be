@@ -3,6 +3,7 @@ package com.example.projectemailmarketingbe.service.Impl;
 import com.example.projectemailmarketingbe.dto.PageResponseDto;
 import com.example.projectemailmarketingbe.dto.TemplateDto;
 import com.example.projectemailmarketingbe.dto.TemplateRpDto;
+import com.example.projectemailmarketingbe.dto.TemplateRpMDto;
 import com.example.projectemailmarketingbe.exception.NotFoundException;
 import com.example.projectemailmarketingbe.mapper.TemplateMapper;
 import com.example.projectemailmarketingbe.model.TemplateEntity;
@@ -79,5 +80,12 @@ public class TemplateServiceImpl implements TemplateService {
     public TemplateEntity findByIdRPEntity(Long proxyId) {
         return templateRepository.findById(proxyId).orElseThrow(
                 () -> new NotFoundException(TEMPLATE_NOT_FOUND));
+    }
+
+    @Override
+    public List<TemplateRpMDto> findAllTemplate() {
+        return templateRepository.findAll().stream()
+                .map(templateMapper::templateEntityToTemplateRpMDto)
+                .collect(Collectors.toList());
     }
 }
