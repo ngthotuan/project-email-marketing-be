@@ -2,7 +2,6 @@ package com.example.projectemailmarketingbe.service.Impl;
 
 import com.example.projectemailmarketingbe.dto.EmailDto;
 import com.example.projectemailmarketingbe.dto.EmailRpDto;
-import com.example.projectemailmarketingbe.dto.EmailWithProxyDto;
 import com.example.projectemailmarketingbe.dto.PageResponseDto;
 import com.example.projectemailmarketingbe.exception.NotFoundException;
 import com.example.projectemailmarketingbe.mapper.EmailMapper;
@@ -10,7 +9,6 @@ import com.example.projectemailmarketingbe.model.EmailEntity;
 import com.example.projectemailmarketingbe.model.ProxyEntity;
 import com.example.projectemailmarketingbe.model.ScheduleCronjobRunEntity;
 import com.example.projectemailmarketingbe.repository.EmailRepository;
-import com.example.projectemailmarketingbe.repository.ProxyRepository;
 import com.example.projectemailmarketingbe.service.EmailService;
 import com.example.projectemailmarketingbe.service.ProxyService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -47,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public PageResponseDto<EmailRpDto> findAll(String search, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<EmailEntity> pageEmail = search.isBlank()
                 ? emailRepository.findAll(pageable)
                 : emailRepository.findAllByEmailContaining(search, pageable);
@@ -66,7 +65,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public List<EmailRpDto> findAll() {
-        return emailRepository.findAll().stream().map(emailMapper
+        return emailRepository.findAll(Sort.by("createdDate").descending()).stream().map(emailMapper
                 ::emailToEmailDto).collect(Collectors.toList());
     }
 
@@ -128,11 +127,15 @@ public class EmailServiceImpl implements EmailService {
         javaMailSender.setUsername(scheduleCronjobRunEntity.getEmailEntity().getEmail());
         javaMailSender.setPassword(scheduleCronjobRunEntity.getEmailEntity().getPassword());
         javaMailSender.setPort(587);
+        javaMailSender.setHost("smtp.gmail.com");
         Properties props = javaMailSender.getJavaMailProperties();
+        props.put("proxySet","true");
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.debug", "true");
+        props.put("mail.smtp.proxy.user",scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getUsername());
+        props.put("mail.smtp.proxy.password",scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getPassword());
         props.put("mail.smtp.proxy.host", scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getHost());
         props.put("mail.smtp.proxy.port", scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getPort());
         return javaMailSender;

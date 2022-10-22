@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public List<ScheduleDto> findAll() {
-        return scheduleRepository.findAll().stream()
+        return scheduleRepository.findAll(Sort.by("createdDate").descending()).stream()
                 .map(schedule -> new ModelMapper().map(schedule, ScheduleDto.class))
                 .collect(Collectors.toList());
     }

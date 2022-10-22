@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 @Entity
-public class FileEntity {
+public class FileEntity extends Auditable<String> {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")

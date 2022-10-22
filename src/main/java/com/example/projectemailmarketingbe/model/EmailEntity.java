@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @Builder
-public class EmailEntity {
+public class EmailEntity extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long emailId;
@@ -22,7 +22,8 @@ public class EmailEntity {
 
     private String password;
 
-    @ManyToOne(cascade ={ CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "proxyId")
     private ProxyEntity proxyEntity;
+
 }

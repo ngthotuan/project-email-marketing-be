@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @Builder
-public class ScheduleCronjobRunEntity {
+public class ScheduleCronjobRunEntity extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;

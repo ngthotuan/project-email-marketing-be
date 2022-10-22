@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Builder
-public class TemplateEntity {
+public class TemplateEntity extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

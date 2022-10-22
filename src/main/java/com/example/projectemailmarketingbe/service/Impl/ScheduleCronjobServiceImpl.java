@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -37,13 +38,13 @@ public class ScheduleCronjobServiceImpl implements ScheduleCronjobService {
 
     @Override
     public List<ScheduleCronjobRunEntity> findAll() {
-        return scheduleCronjobRepository.findAll();
+        return scheduleCronjobRepository.findAll(Sort.by("createdDate").descending());
     }
 
     @Override
     public PageResponseDto<ScheduleCronjobRpDto> findAllWithPagingAndSearch(String search, int page, int size) {
 
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<ScheduleCronjobRunEntity> pageEmail = search.isBlank()
                 ? scheduleCronjobRepository.findAll(pageable)
                 : scheduleCronjobRepository.findAll(search, pageable);

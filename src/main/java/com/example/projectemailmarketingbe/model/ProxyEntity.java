@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-public class ProxyEntity {
+public class ProxyEntity extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long proxyId;
@@ -22,7 +22,7 @@ public class ProxyEntity {
     private String password;
     private String host;
     private String port;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proxyEntity")
+    @OneToMany(mappedBy = "proxyEntity", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<EmailEntity> emailEntities;
 }
 

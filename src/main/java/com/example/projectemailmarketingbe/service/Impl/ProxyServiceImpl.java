@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,7 +34,7 @@ public class ProxyServiceImpl implements ProxyService {
 
     @Override
     public PageResponseDto<ProxyRpDto> findAllProxyWithPagingAndSearch(String search, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<ProxyEntity> pageEmail = search.isBlank()
                 ? proxyRepository.findAll(pageable)
                 : proxyRepository.findAll(search, pageable);

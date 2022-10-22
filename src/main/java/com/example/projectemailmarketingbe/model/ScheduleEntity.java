@@ -18,7 +18,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Data
 @Builder
-public class ScheduleEntity {
+public class ScheduleEntity extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

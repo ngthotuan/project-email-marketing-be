@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,7 +29,7 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Override
     public PageResponseDto<TemplateRpDto> findAllTemplateWithPagingAndSearch(String search, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<TemplateEntity> pageEmail = search.isBlank()
                 ? templateRepository.findAll(pageable)
                 : templateRepository.findAll(search, pageable);

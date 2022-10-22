@@ -5,7 +5,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +18,7 @@ import java.util.Optional;
 
 @Configuration
 @EnableAsync
+@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class GlobalConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
