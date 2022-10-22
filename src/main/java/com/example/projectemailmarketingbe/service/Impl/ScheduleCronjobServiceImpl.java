@@ -66,7 +66,7 @@ public class ScheduleCronjobServiceImpl implements ScheduleCronjobService {
         TemplateEntity templateEntity = templateService.findByIdRPEntity(scheduleCronjobDto.getTemplateId());
         EmailEntity emailEntity = emailService.findEmailByEmailReturnEntity(scheduleCronjobDto.getEmail());
         ScheduleEntity scheduleEntity = scheduleService.findById(scheduleCronjobDto.getScheduleId());
-        ScheduleCronjobRunEntity scheduleCronjobRunEntity = scheduleCronjobRepository.findById(scheduleCronjobDto.getScheduleCronjobId()).orElseThrow(() -> new NotFoundException(SCHEDULE_CRONJOB_RUN_NOT_FOUND));
+        ScheduleCronjobRunEntity scheduleCronjobRunEntity = scheduleCronjobRepository.findById(scheduleCronjobDto.getId()).orElseThrow(() -> new NotFoundException(SCHEDULE_CRONJOB_RUN_NOT_FOUND));
         scheduleCronjobRunEntity.setScheduleEntity(scheduleEntity);
         scheduleCronjobRunEntity.setEmailEntity(emailEntity);
         scheduleCronjobRunEntity.setTemplateEntity(templateEntity);
