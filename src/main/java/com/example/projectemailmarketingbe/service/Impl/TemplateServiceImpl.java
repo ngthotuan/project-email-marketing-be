@@ -2,6 +2,7 @@ package com.example.projectemailmarketingbe.service.Impl;
 
 import com.example.projectemailmarketingbe.dto.PageResponseDto;
 import com.example.projectemailmarketingbe.dto.TemplateDto;
+import com.example.projectemailmarketingbe.dto.TemplateRpDto;
 import com.example.projectemailmarketingbe.exception.NotFoundException;
 import com.example.projectemailmarketingbe.mapper.TemplateMapper;
 import com.example.projectemailmarketingbe.model.TemplateEntity;
@@ -26,7 +27,7 @@ public class TemplateServiceImpl implements TemplateService {
     private final TemplateMapper templateMapper;
 
     @Override
-    public PageResponseDto<TemplateDto> findAllTemplateWithPagingAndSearch(String search, int page, int size) {
+    public PageResponseDto<TemplateRpDto> findAllTemplateWithPagingAndSearch(String search, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<TemplateEntity> pageEmail = search.isBlank()
                 ? templateRepository.findAll(pageable)
@@ -38,28 +39,28 @@ public class TemplateServiceImpl implements TemplateService {
                 .totalPages(pageEmail.getTotalPages())
                 .totalElements(pageEmail.getTotalElements())
                 .elements(pageEmail.stream()
-                        .map(templateMapper::templateEntityToTemplateDto)
+                        .map(templateMapper::templateEntityToTemplateRpDto)
                         .collect(Collectors.toList()))
                 .build();
         return pageResponseDto;
     }
 
     @Override
-    public List<TemplateDto> addListTemplates(List<TemplateDto> proxyRpDtos) {
+    public List<TemplateRpDto> addListTemplates(List<TemplateDto> templateDtos) {
         return null;
     }
 
     @Override
     @Transactional
-    public TemplateDto updateTemplate(TemplateEntity templateEntity) {
+    public TemplateRpDto updateTemplate(TemplateEntity templateEntity) {
         TemplateEntity entity = findByIdRPEntity(templateEntity.getId());
-        return templateMapper.templateEntityToTemplateDto(templateRepository.save(templateEntity));
+        return templateMapper.templateEntityToTemplateRpDto(templateRepository.save(templateEntity));
     }
 
     @Override
-    public TemplateDto createTemplate(TemplateDto templateDto) {
+    public TemplateRpDto createTemplate(TemplateDto templateDto) {
         TemplateEntity saved = templateRepository.save(templateMapper.templateDtoToTemplateEntity(templateDto));
-        return templateMapper.templateEntityToTemplateDto(saved);
+        return templateMapper.templateEntityToTemplateRpDto(saved);
     }
 
     @Override
@@ -69,9 +70,9 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public TemplateDto findById(Long templateId) {
+    public TemplateRpDto findById(Long templateId) {
         TemplateEntity templateEntity = findByIdRPEntity(templateId);
-        return templateMapper.templateEntityToTemplateDto(templateEntity);
+        return templateMapper.templateEntityToTemplateRpDto(templateEntity);
     }
 
     @Override

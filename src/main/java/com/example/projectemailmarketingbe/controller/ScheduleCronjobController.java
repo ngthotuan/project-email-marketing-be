@@ -34,7 +34,7 @@ public class ScheduleCronjobController {
     }
 
     @GetMapping("/{scheduleCronjobId}")
-    public ResponseEntity<ResponseBodyDto<ScheduleCronjobRpDto>> findProxyById(@PathVariable("scheduleCronjobId") Long scheduleCronjobId) {
+    public ResponseEntity<ResponseBodyDto<ScheduleCronjobRpDto>> findScheduleCronjobById(@PathVariable("scheduleCronjobId") Long scheduleCronjobId) {
         ResponseBodyDto<ScheduleCronjobRpDto> responseBodyDto = new ResponseBodyDto<>();
         responseBodyDto.setData(scheduleCronjobService.findScheduleCronjobById(scheduleCronjobId));
         responseBodyDto.setStatusCode(200);
@@ -42,13 +42,13 @@ public class ScheduleCronjobController {
     }
 
     @DeleteMapping("/{scheduleCronjobId}")
-    public ResponseEntity<?> deleteProxy(@PathVariable("scheduleCronjobId") Long scheduleCronjobId) {
+    public ResponseEntity<?> deleteScheduleCronjob(@PathVariable("scheduleCronjobId") Long scheduleCronjobId) {
         scheduleCronjobService.deleteScheduleCronjobById(scheduleCronjobId);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/schedules-cronjob")
-    public ResponseEntity<?> updateProxy(@RequestBody ScheduleCronjobDto scheduleCronjobDto) {
+    public ResponseEntity<?> updateScheduleCronjob(@RequestBody ScheduleCronjobDto scheduleCronjobDto) {
         ResponseBodyDto<ScheduleCronjobRpDto> responseBodyDto = new ResponseBodyDto<>();
         responseBodyDto.setData(scheduleCronjobService.updateProxy(scheduleCronjobDto));
         responseBodyDto.setStatusCode(200);
@@ -56,10 +56,26 @@ public class ScheduleCronjobController {
     }
 
     @PostMapping("/schedules-cronjob")
-    public ResponseEntity<?> createProxy(@RequestBody ScheduleCronjobDto scheduleCronjobDto) {
+    public ResponseEntity<?> createScheduleCronjob(@RequestBody ScheduleCronjobDto scheduleCronjobDto) {
         ResponseBodyDto<ScheduleCronjobRpDto> responseBodyDto = new ResponseBodyDto<>();
         responseBodyDto.setData(scheduleCronjobService.addScheduleCronjob(scheduleCronjobDto));
         responseBodyDto.setStatusCode(201);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseBodyDto);
+    }
+
+    @PutMapping("/schedules-cronjob/{scheduleCronjobId}/enable")
+    public ResponseEntity<?> enableScheduleCronjob(@PathVariable Long scheduleCronjobId) {
+        ResponseBodyDto<ScheduleCronjobRpDto> responseBodyDto = new ResponseBodyDto<>();
+        responseBodyDto.setData(scheduleCronjobService.updateStatusCronjob(scheduleCronjobId, Boolean.TRUE));
+        responseBodyDto.setStatusCode(200);
+        return ResponseEntity.status(HttpStatus.OK).body(responseBodyDto);
+    }
+
+    @PutMapping("/schedules-cronjob/{scheduleCronjobId}/disable")
+    public ResponseEntity<?> disableScheduleCronjob(@PathVariable Long scheduleCronjobId) {
+        ResponseBodyDto<ScheduleCronjobRpDto> responseBodyDto = new ResponseBodyDto<>();
+        responseBodyDto.setData(scheduleCronjobService.updateStatusCronjob(scheduleCronjobId, Boolean.FALSE));
+        responseBodyDto.setStatusCode(200);
+        return ResponseEntity.status(HttpStatus.OK).body(responseBodyDto);
     }
 }

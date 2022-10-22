@@ -1,8 +1,8 @@
 package com.example.projectemailmarketingbe.controller;
 
 import com.example.projectemailmarketingbe.dto.PageResponseDto;
+import com.example.projectemailmarketingbe.dto.ProxyDto;
 import com.example.projectemailmarketingbe.dto.ProxyRpDto;
-import com.example.projectemailmarketingbe.dto.ProxyUpdateDto;
 import com.example.projectemailmarketingbe.dto.ResponseBodyDto;
 import com.example.projectemailmarketingbe.service.ProxyService;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +58,7 @@ public class ProxyController {
     }
 
     @PutMapping("/proxy")
-    public ResponseEntity<?> updateProxy(@RequestBody ProxyUpdateDto proxyUpdateDto) {
+    public ResponseEntity<?> updateProxy(@RequestBody ProxyRpDto proxyUpdateDto) {
         ResponseBodyDto<ProxyRpDto> responseBodyDto = new ResponseBodyDto<>();
         responseBodyDto.setData(proxyService.updateProxy(proxyUpdateDto));
         responseBodyDto.setStatusCode(200);
@@ -66,17 +66,17 @@ public class ProxyController {
     }
 
     @PostMapping("/proxy")
-    public ResponseEntity<?> createProxy(@RequestBody ProxyRpDto proxyRpDto){
+    public ResponseEntity<?> createProxy(@RequestBody ProxyDto proxyDto) {
         ResponseBodyDto<ProxyRpDto> responseBodyDto = new ResponseBodyDto<>();
-        responseBodyDto.setData(proxyService.addProxy(proxyRpDto));
+        responseBodyDto.setData(proxyService.addProxy(proxyDto));
         responseBodyDto.setStatusCode(201);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseBodyDto);
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createProxies(@RequestBody List<ProxyRpDto> proxyRpDtos) {
+    public ResponseEntity<?> createProxies(@RequestBody List<ProxyDto> proxyDtos) {
         ResponseBodyDto<List<ProxyRpDto>> responseBodyDto = new ResponseBodyDto<>();
-        responseBodyDto.setData(proxyService.addListProxies(proxyRpDtos));
+        responseBodyDto.setData(proxyService.addListProxies(proxyDtos));
         responseBodyDto.setStatusCode(201);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseBodyDto);
     }

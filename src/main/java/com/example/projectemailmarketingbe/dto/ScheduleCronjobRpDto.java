@@ -19,4 +19,5 @@ public class ScheduleCronjobRpDto {
     private String templateSubject;
     private String scheduleExpression;
     private String emailTos;
+    private Boolean enable;
 }

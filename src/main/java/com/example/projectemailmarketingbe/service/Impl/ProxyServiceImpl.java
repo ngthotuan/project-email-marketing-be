@@ -1,8 +1,8 @@
 package com.example.projectemailmarketingbe.service.Impl;
 
 import com.example.projectemailmarketingbe.dto.PageResponseDto;
+import com.example.projectemailmarketingbe.dto.ProxyDto;
 import com.example.projectemailmarketingbe.dto.ProxyRpDto;
-import com.example.projectemailmarketingbe.dto.ProxyUpdateDto;
 import com.example.projectemailmarketingbe.exception.NotFoundException;
 import com.example.projectemailmarketingbe.mapper.ProxyMapper;
 import com.example.projectemailmarketingbe.model.ProxyEntity;
@@ -51,21 +51,21 @@ public class ProxyServiceImpl implements ProxyService {
     }
 
     @Override
-    public List<ProxyRpDto> addListProxies(List<ProxyRpDto> proxyRpDtos) {
+    public List<ProxyRpDto> addListProxies(List<ProxyDto> proxyDtos) {
         List<ProxyEntity> proxyEntities =
-                proxyRepository.saveAll(proxyRpDtos.stream().map(proxyMapper::proxyRpDtoToProxyEntity).collect(Collectors.toList()));
+                proxyRepository.saveAll(proxyDtos.stream().map(proxyMapper::proxyDtoToProxyEntity).collect(Collectors.toList()));
         return proxyEntities.stream().map(proxyMapper::proxyEntityToProxyRpDto).collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public ProxyRpDto updateProxy(ProxyUpdateDto proxyUpdateDto) {
-        ProxyEntity proxyByIdReturnEntity = findProxyByIdReturnEntity(proxyUpdateDto.getId());
-        proxyByIdReturnEntity.setHost(proxyUpdateDto.getHost());
-        proxyByIdReturnEntity.setPassword(proxyUpdateDto.getPassword());
-        proxyByIdReturnEntity.setName(proxyUpdateDto.getName());
-        proxyByIdReturnEntity.setPort(proxyUpdateDto.getPort());
-        proxyByIdReturnEntity.setUsername(proxyUpdateDto.getUsername());
+    public ProxyRpDto updateProxy(ProxyRpDto proxyRpDto) {
+        ProxyEntity proxyByIdReturnEntity = findProxyByIdReturnEntity(proxyRpDto.getId());
+        proxyByIdReturnEntity.setHost(proxyRpDto.getHost());
+        proxyByIdReturnEntity.setPassword(proxyRpDto.getPassword());
+        proxyByIdReturnEntity.setName(proxyRpDto.getName());
+        proxyByIdReturnEntity.setPort(proxyRpDto.getPort());
+        proxyByIdReturnEntity.setUsername(proxyRpDto.getUsername());
 
 
         return proxyMapper.proxyEntityToProxyRpDto(proxyByIdReturnEntity);
@@ -84,8 +84,8 @@ public class ProxyServiceImpl implements ProxyService {
     }
 
     @Override
-    public ProxyRpDto addProxy(ProxyRpDto proxyRpDto) {
-        ProxyEntity proxyEntity = proxyRepository.save(proxyMapper.proxyRpDtoToProxyEntity(proxyRpDto));
+    public ProxyRpDto addProxy(ProxyDto proxyDto) {
+        ProxyEntity proxyEntity = proxyRepository.save(proxyMapper.proxyDtoToProxyEntity(proxyDto));
         return proxyMapper.proxyEntityToProxyRpDto(proxyEntity);
     }
 

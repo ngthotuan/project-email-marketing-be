@@ -29,10 +29,13 @@ public class GeneralTaskScheduler {
     public void schedule() {
         scheduledTasks.forEach(scheduledFuture -> scheduledFuture.cancel(false));
         scheduleCronjobService.findAll().forEach(scheduleCronjobRunEntity -> {
-            scheduledTasks.add(notificationDefault(scheduleCronjobRunEntity));
+            if (scheduleCronjobRunEntity.getEnable()) {
+                scheduledTasks.add(notificationDefault(scheduleCronjobRunEntity));
+            }
         });
     }
-    private ScheduledFuture notificationDefault(ScheduleCronjobRunEntity scheduleCronjobRunEntity){
+
+    private ScheduledFuture notificationDefault(ScheduleCronjobRunEntity scheduleCronjobRunEntity) {
         return scheduleSendNotification(scheduleCronjobRunEntity, scheduledTask);
     }
 

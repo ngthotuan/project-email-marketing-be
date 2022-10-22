@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScheduleCronjobMapperImpl implements ScheduleCronjobMapper {
     @Override
-    public ScheduleCronjobRpDto ScheduleCronjobRunEntityToRpDto(ScheduleCronjobRunEntity scheduleCronjobRunEntity){
+    public ScheduleCronjobRpDto ScheduleCronjobRunEntityToRpDto(ScheduleCronjobRunEntity scheduleCronjobRunEntity) {
         return ScheduleCronjobRpDto.builder()
                 .id(scheduleCronjobRunEntity.getId())
                 .email(scheduleCronjobRunEntity.getEmailEntity().getEmail())
@@ -19,6 +19,7 @@ public class ScheduleCronjobMapperImpl implements ScheduleCronjobMapper {
                 .templateSubject(scheduleCronjobRunEntity.getTemplateEntity().getSubject())
                 .emailTos(scheduleCronjobRunEntity.getEmailTo())
                 .scheduleExpression(scheduleCronjobRunEntity.getScheduleEntity().getCron())
+                .enable(scheduleCronjobRunEntity.getEnable())
                 .build();
     }
 }

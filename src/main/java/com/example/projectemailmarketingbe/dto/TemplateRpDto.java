@@ -5,16 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class ProxyUpdateDto {
+@AllArgsConstructor
+@Builder
+public class TemplateRpDto {
     private Long id;
     private String name;
-    private String username;
-    private String password;
-    private String host;
-    private String port;
-    private String type;
+    private String subject;
+    private String content;
 }

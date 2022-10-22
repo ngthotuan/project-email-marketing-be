@@ -1,5 +1,6 @@
 package com.example.projectemailmarketingbe.mapper.impl;
 
+import com.example.projectemailmarketingbe.dto.ProxyDto;
 import com.example.projectemailmarketingbe.dto.ProxyRpDto;
 import com.example.projectemailmarketingbe.mapper.ProxyMapper;
 import com.example.projectemailmarketingbe.model.ProxyEntity;
@@ -20,13 +21,13 @@ public class ProxyMapperImpl implements ProxyMapper {
     }
 
     @Override
-    public ProxyEntity proxyRpDtoToProxyEntity(ProxyRpDto proxyRpDto) {
+    public ProxyEntity proxyDtoToProxyEntity(ProxyDto proxyDto) {
         return ProxyEntity.builder()
-                .host(proxyRpDto.getHost())
-                .port(proxyRpDto.getPort())
-                .password(proxyRpDto.getPassword())
-                .name(proxyRpDto.getName())
-                .username(proxyRpDto.getUsername())
+                .host(proxyDto.getHost())
+                .port(proxyDto.getPort())
+                .password(proxyDto.getPassword())
+                .name(proxyDto.getName())
+                .username(proxyDto.getUsername())
                 .build();
     }
 

@@ -96,7 +96,15 @@ public class ScheduleCronjobServiceImpl implements ScheduleCronjobService {
         scheduleCronjobRunEntity.setEmailEntity(emailEntity);
         scheduleCronjobRunEntity.setTemplateEntity(templateEntity);
         scheduleCronjobRunEntity.setEmailTo(scheduleCronjobDto.getEmailTos());
+        scheduleCronjobRepository.save(scheduleCronjobRunEntity);
         return scheduleCronjobMapper.ScheduleCronjobRunEntityToRpDto(scheduleCronjobRunEntity);
+    }
 
+    @Override
+    @Transactional
+    public ScheduleCronjobRpDto updateStatusCronjob(Long scheduleCronjobId, Boolean enable) {
+        ScheduleCronjobRunEntity scheduleCronjobRunEntity = scheduleCronjobRepository.findById(scheduleCronjobId).orElseThrow(() -> new NotFoundException(SCHEDULE_CRONJOB_RUN_NOT_FOUND));
+        scheduleCronjobRunEntity.setEnable(enable);
+        return scheduleCronjobMapper.ScheduleCronjobRunEntityToRpDto(scheduleCronjobRunEntity);
     }
 }

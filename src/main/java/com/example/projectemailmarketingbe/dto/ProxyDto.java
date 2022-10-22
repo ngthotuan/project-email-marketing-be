@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class TemplateDto {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProxyDto {
     private String name;
-    private String subject;
-    private String content;
+    private String username;
+    private String password;
+    private String host;
+    private String port;
 }

@@ -1,6 +1,7 @@
 package com.example.projectemailmarketingbe.mapper.impl;
 
 import com.example.projectemailmarketingbe.dto.TemplateDto;
+import com.example.projectemailmarketingbe.dto.TemplateRpDto;
 import com.example.projectemailmarketingbe.mapper.TemplateMapper;
 import com.example.projectemailmarketingbe.model.TemplateEntity;
 import org.springframework.stereotype.Component;
@@ -8,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class TemplateMapperImpl implements TemplateMapper {
     @Override
-    public TemplateDto templateEntityToTemplateDto(TemplateEntity templateEntity) {
-        return TemplateDto.builder()
+    public TemplateRpDto templateEntityToTemplateRpDto(TemplateEntity templateEntity) {
+        return TemplateRpDto.builder()
                 .id(templateEntity.getId())
                 .name(templateEntity.getName())
                 .content(templateEntity.getContent())
