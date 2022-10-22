@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -99,7 +99,7 @@ public class DataLoader implements ApplicationRunner {
                             .emailEntity(emailRepository.findById(i + 1).get())
                             .templateEntity(templateRepository.findById(i + 1).get())
                             .scheduleEntity(scheduleRepository.findById(i % 3 + 1).get())
-                            .emailTo(LongStream.range(1, new Random().nextInt(5))
+                            .emailTo(LongStream.range(0, ThreadLocalRandom.current().nextInt(1, 6))
                                     .mapToObj(j -> RandomString.make() + "@gmail.com")
                                     .collect(Collectors.joining(",")))
                             .enable(true)
