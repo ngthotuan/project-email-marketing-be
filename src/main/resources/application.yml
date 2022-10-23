@@ -5,7 +5,7 @@ spring:
     username: ${DB_USERNAME:emtest}
     password: ${DB_PASSWORD:emtest}
   jpa:
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: update
     generate-ddl: true
     show-sql: true
     defer-datasource-initialization: true
@@ -29,7 +29,5 @@ com:
 server:
   servlet:
     context-path: /email-service/v1
-cron:
-  reschedule: ${RESCHEDULE_TASK_CRON_EXPRESSION:* 0/10 * * * *}
 thread.pool:
   size: ${THREAD_POOL_SIZE:5}
