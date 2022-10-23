@@ -156,7 +156,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setFrom(scheduleCronjobRunEntity.getEmailEntity().getEmail());
             helper.setTo(email);
             helper.setSubject(scheduleCronjobRunEntity.getTemplateEntity().getSubject());
-            helper.setText(scheduleCronjobRunEntity.getTemplateEntity().getContent());
+            helper.setText(scheduleCronjobRunEntity.getTemplateEntity().getContent(), true);
             mailSender.send(message);
             log.info(SEND_MAIL_LOG, email);
         }
