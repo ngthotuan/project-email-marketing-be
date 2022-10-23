@@ -19,7 +19,9 @@ public class ScheduleCronjobMapperImpl implements ScheduleCronjobMapper {
         return ScheduleCronjobRpDto.builder()
                 .id(scheduleCronjobRunEntity.getId())
                 .email(emailMapper.emailToEmailDto(scheduleCronjobRunEntity.getEmailEntity()))
-                .proxy(proxyMapper.proxyEntityToProxyRpDto(scheduleCronjobRunEntity.getEmailEntity().getProxyEntity()))
+                .proxy(scheduleCronjobRunEntity.getEmailEntity().getProxyEntity()!=null?
+                        proxyMapper.proxyEntityToProxyRpDto(scheduleCronjobRunEntity.getEmailEntity().getProxyEntity())
+                        :null)
                 .template(templateMapper.templateEntityToTemplateRpDto(scheduleCronjobRunEntity.getTemplateEntity()))
                 .schedule(scheduleMapper.scheduleToScheduleDto(scheduleCronjobRunEntity.getScheduleEntity()))
                 .emailTos(scheduleCronjobRunEntity.getEmailTo())
