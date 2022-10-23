@@ -152,11 +152,11 @@ public class EmailServiceImpl implements EmailService {
 
         String[] emailTos = scheduleCronjobRunEntity.getEmailTo().trim().split(",");
         for (String email : emailTos) {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setFrom(scheduleCronjobRunEntity.getEmailEntity().getEmail());
             helper.setTo(email);
             helper.setSubject(scheduleCronjobRunEntity.getTemplateEntity().getSubject());
-            helper.setText(scheduleCronjobRunEntity.getTemplateEntity().getContent(), "text/html; charset=utf-8");
+            helper.setText(scheduleCronjobRunEntity.getTemplateEntity().getContent(), true);
             mailSender.send(message);
             log.info(SEND_MAIL_LOG, email);
         }
