@@ -22,6 +22,7 @@ public class ScheduleEntity extends Auditable<String> {
     private Long id;
     private String name;
     private String cron;
+
     @OneToMany(mappedBy = "scheduleEntity", cascade = CascadeType.ALL)
     private List<ScheduleCronjobRunEntity> scheduleCronjobRunEntities;
 }
