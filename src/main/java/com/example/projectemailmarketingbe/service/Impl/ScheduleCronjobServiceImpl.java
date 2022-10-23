@@ -19,9 +19,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +51,16 @@ public class ScheduleCronjobServiceImpl implements ScheduleCronjobService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<ScheduleCronjobRunEntity> pageEmail = search.isBlank()
                 ? scheduleCronjobRepository.findAll(pageable)
-                : scheduleCronjobRepository.findAll(search, pageable);
+                : scheduleCronjobRepository.findAll((Specification<ScheduleCronjobRunEntity>) (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            final Path<EmailEntity> emailPath = root.get("emailEntity");
+            final Path<TemplateEntity> templatePath = root.get("templateEntity");
+            final Path<ScheduleEntity> schedulePath = root.get("scheduleEntity");
+            predicates.add(criteriaBuilder.and(criteriaBuilder.like(emailPath.get("email"), "%" + search + "%")));
+            predicates.add(criteriaBuilder.and(criteriaBuilder.like(templatePath.get("name"), "%" + search + "%")));
+            predicates.add(criteriaBuilder.and(criteriaBuilder.like(schedulePath.get("name"), "%" + search + "%")));
+            return criteriaBuilder.or(predicates.toArray(new Predicate[predicates.size()]));
+        }, pageable);
         PageResponseDto pageResponseDto = PageResponseDto
                 .builder()
                 .page(page)

@@ -27,7 +27,12 @@ public class GlobalConfig {
 
     @Bean
     public AuditorAware<String> auditorProvider() {
-        return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
+        return () -> {
+            if (SecurityContextHolder.getContext() == null) {
+                return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
+            }
+            return Optional.of("Administrator");
+        };
     }
 
     @Bean
