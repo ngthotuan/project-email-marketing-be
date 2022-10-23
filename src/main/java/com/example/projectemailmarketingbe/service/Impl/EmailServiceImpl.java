@@ -21,7 +21,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -133,7 +132,7 @@ public class EmailServiceImpl implements EmailService {
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
+        props.put("mail.debug", "false");
         if (scheduleCronjobRunEntity.getEmailEntity().getProxyEntity() != null) {
             props.put("proxySet", "true");
             props.put("mail.smtp.proxy.user", scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getUsername());
@@ -144,8 +143,8 @@ public class EmailServiceImpl implements EmailService {
         return javaMailSender;
     }
 
+    @SneakyThrows
     @Override
-    @Async
     public void sendMail(ScheduleCronjobRunEntity scheduleCronjobRunEntity) throws MessagingException {
 
         JavaMailSender mailSender = createJavaMailSender(scheduleCronjobRunEntity);
@@ -161,7 +160,6 @@ public class EmailServiceImpl implements EmailService {
             mailSender.send(message);
             log.info(SEND_MAIL_LOG, email);
         }
-
     }
 
     @Override
@@ -175,6 +173,5 @@ public class EmailServiceImpl implements EmailService {
         return emailRepository.findByEmail(email).orElseThrow(
                 () -> new NotFoundException(USER_NOT_FOUND));
     }
-
 
 }
