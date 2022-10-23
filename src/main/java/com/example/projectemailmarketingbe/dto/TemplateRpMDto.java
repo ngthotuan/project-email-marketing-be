@@ -5,14 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Created by ngthotuan on 22/10/2022
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ScheduleCronjobDto {
+public class TemplateRpMDto {
     private Long id;
-    private String email;
-    private Long templateId;
-    private Long scheduleId;
-    private String emailTos;
+    private String name;
+    private String subject;
 }

@@ -1,14 +1,8 @@
 package com.example.projectemailmarketingbe;
 
 import com.example.projectemailmarketingbe.dto.UserRegisterDto;
-import com.example.projectemailmarketingbe.model.EmailEntity;
-import com.example.projectemailmarketingbe.model.ProxyEntity;
-import com.example.projectemailmarketingbe.model.ScheduleEntity;
-import com.example.projectemailmarketingbe.model.UserEntity;
-import com.example.projectemailmarketingbe.repository.EmailRepository;
-import com.example.projectemailmarketingbe.repository.ProxyRepository;
-import com.example.projectemailmarketingbe.repository.ScheduleRepository;
-import com.example.projectemailmarketingbe.repository.UserRepository;
+import com.example.projectemailmarketingbe.model.*;
+import com.example.projectemailmarketingbe.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
@@ -19,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -34,6 +29,8 @@ public class DataLoader implements ApplicationRunner {
     private final EmailRepository emailRepository;
     private final ScheduleRepository scheduleRepository;
     private final ProxyRepository proxyRepository;
+    private final TemplateRepository templateRepository;
+    private final ScheduleCronjobRepository scheduleCronjobRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -54,20 +51,6 @@ public class DataLoader implements ApplicationRunner {
             userRepository.save(user);
         }
 
-        // init email
-        if (emailRepository.count() == 0) {
-            log.info("init email");
-            List<EmailEntity> emails = LongStream.range(0, 100)
-                    .mapToObj(i -> {
-                        EmailEntity email = new EmailEntity();
-                        email.setEmail(RandomString.make() + "@gmail.com");
-                        email.setPassword(RandomString.make());
-                        return email;
-                    })
-                    .collect(Collectors.toList());
-            emailRepository.saveAll(emails);
-        }
-
         // init schedule
         if (scheduleRepository.count() == 0) {
             log.info("init schedule");
@@ -76,21 +59,53 @@ public class DataLoader implements ApplicationRunner {
             scheduleRepository.save(new ScheduleEntity(3L, "At 12:00 AM, only on Sunday and Saturday", "0 0 0 ? * SUN,SAT"));
         }
 
-        // init proxy
-        if (proxyRepository.count() == 0) {
-            log.info("init proxy");
-            List<ProxyEntity> proxyEntities = LongStream.range(0, 100)
-                    .mapToObj(i -> {
-                        ProxyEntity proxyEntity = new ProxyEntity();
-                        proxyEntity.setName(RandomString.make());
-                        proxyEntity.setHost(RandomString.make());
-                        proxyEntity.setPort(String.format("%06d", i));
-                        proxyEntity.setUsername(RandomString.make());
-                        proxyEntity.setPassword(RandomString.make());
-                        return proxyEntity;
-                    })
-                    .collect(Collectors.toList());
-            proxyRepository.saveAll(proxyEntities);
+        // init proxy vs email
+        if (proxyRepository.count() == 0 && emailRepository.count() == 0) {
+            log.info("init proxy vs email");
+            List<EmailEntity> emailsWithProxy = LongStream.range(0, 100)
+                    .mapToObj(i -> EmailEntity.builder()
+                            .email(RandomString.make() + "@gmail.com")
+                            .password(RandomString.make())
+                            .proxyEntity(ProxyEntity.builder()
+                                    .name(RandomString.make())
+                                    .host(RandomString.make())
+                                    .port(String.format("%06d", i))
+                                    .username(RandomString.make())
+                                    .password(RandomString.make())
+                                    .build())
+                            .build()
+                    ).collect(Collectors.toList());
+            emailRepository.saveAll(emailsWithProxy);
+        }
+
+        // init template
+        if (templateRepository.count() == 0) {
+            log.info("init template");
+            List<TemplateEntity> templates = LongStream.range(0, 100)
+                    .mapToObj(i -> TemplateEntity.builder()
+                            .name(RandomString.make())
+                            .subject(RandomString.make())
+                            .content(RandomString.make())
+                            .build()
+                    ).collect(Collectors.toList());
+            templateRepository.saveAll(templates);
+        }
+
+        // init schedule cronjob
+        if (scheduleCronjobRepository.count() == 0) {
+            log.info("init schedule cronjob");
+            List<ScheduleCronjobRunEntity> scheduleCronjobRunEntities = LongStream.range(0, 100)
+                    .mapToObj(i -> ScheduleCronjobRunEntity.builder()
+                            .emailEntity(emailRepository.findById(i + 1).get())
+                            .templateEntity(templateRepository.findById(i + 1).get())
+                            .scheduleEntity(scheduleRepository.findById(i % 3 + 1).get())
+                            .emailTo(LongStream.range(0, ThreadLocalRandom.current().nextInt(1, 6))
+                                    .mapToObj(j -> RandomString.make() + "@gmail.com")
+                                    .collect(Collectors.joining(",")))
+                            .enable(true)
+                            .build()
+                    ).collect(Collectors.toList());
+            scheduleCronjobRepository.saveAll(scheduleCronjobRunEntities);
         }
     }
 }

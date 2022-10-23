@@ -3,6 +3,7 @@ package com.example.projectemailmarketingbe.service;
 import com.example.projectemailmarketingbe.dto.PageResponseDto;
 import com.example.projectemailmarketingbe.dto.TemplateDto;
 import com.example.projectemailmarketingbe.dto.TemplateRpDto;
+import com.example.projectemailmarketingbe.dto.TemplateRpMDto;
 import com.example.projectemailmarketingbe.model.TemplateEntity;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface TemplateService {
     TemplateRpDto findById(Long templateId);
 
     TemplateEntity findByIdRPEntity(Long templateId);
+
+    List<TemplateRpMDto> findAllTemplate();
 }
