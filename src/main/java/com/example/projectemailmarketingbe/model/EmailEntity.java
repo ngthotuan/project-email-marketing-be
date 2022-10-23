@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -26,4 +27,6 @@ public class EmailEntity extends Auditable<String> {
     @JoinColumn(name = "proxyId")
     private ProxyEntity proxyEntity;
 
+    @OneToMany(mappedBy = "emailEntity", cascade = CascadeType.ALL)
+    private List<ScheduleCronjobRunEntity> scheduleCronjobRunEntities;
 }

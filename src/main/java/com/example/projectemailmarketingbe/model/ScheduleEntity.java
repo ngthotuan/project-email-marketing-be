@@ -5,10 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by ngthotuan on 13/10/2022
@@ -24,4 +22,6 @@ public class ScheduleEntity extends Auditable<String> {
     private Long id;
     private String name;
     private String cron;
+    @OneToMany(mappedBy = "scheduleEntity", cascade = CascadeType.ALL)
+    private List<ScheduleCronjobRunEntity> scheduleCronjobRunEntities;
 }

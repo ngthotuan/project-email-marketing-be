@@ -22,7 +22,14 @@ public class ProxyEntity extends Auditable<String> {
     private String password;
     private String host;
     private String port;
-    @OneToMany(mappedBy = "proxyEntity", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "proxyEntity")
     private List<EmailEntity> emailEntities;
+
+    @PreRemove
+    private void preRemove() {
+        for (EmailEntity e : emailEntities) {
+            e.setProxyEntity(null);
+        }
+    }
 }
 

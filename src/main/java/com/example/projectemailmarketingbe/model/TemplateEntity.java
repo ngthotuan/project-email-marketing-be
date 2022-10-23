@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +21,7 @@ public class TemplateEntity extends Auditable<String> {
     private String subject;
     @Lob
     private String content;
+
+    @OneToMany(mappedBy = "templateEntity", cascade = CascadeType.ALL)
+    private List<ScheduleCronjobRunEntity> scheduleCronjobRunEntities;
 }
