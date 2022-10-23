@@ -129,15 +129,18 @@ public class EmailServiceImpl implements EmailService {
         javaMailSender.setPort(587);
         javaMailSender.setHost("smtp.gmail.com");
         Properties props = javaMailSender.getJavaMailProperties();
-        props.put("proxySet","true");
+
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.debug", "true");
-        props.put("mail.smtp.proxy.user",scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getUsername());
-        props.put("mail.smtp.proxy.password",scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getPassword());
-        props.put("mail.smtp.proxy.host", scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getHost());
-        props.put("mail.smtp.proxy.port", scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getPort());
+        if (scheduleCronjobRunEntity.getEmailEntity().getProxyEntity() != null) {
+            props.put("proxySet", "true");
+            props.put("mail.smtp.proxy.user", scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getUsername());
+            props.put("mail.smtp.proxy.password", scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getPassword());
+            props.put("mail.smtp.proxy.host", scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getHost());
+            props.put("mail.smtp.proxy.port", scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getPort());
+        }
         return javaMailSender;
     }
 
