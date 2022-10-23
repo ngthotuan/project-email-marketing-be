@@ -44,7 +44,7 @@ public class GeneralTaskScheduler {
                     try {
                         scheduledTask.sendNotificationToUser(scheduleCronjobRunEntity);
                     } catch (MessagingException e) {
-                        e.printStackTrace();
+                        log.error("scheduleSendNotification FAIL", e);
                     }
                 },
                 triggerContext -> {
