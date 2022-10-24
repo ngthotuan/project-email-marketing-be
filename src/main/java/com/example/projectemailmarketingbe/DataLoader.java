@@ -49,7 +49,7 @@ public class DataLoader implements ApplicationRunner {
         // init schedule
         if (scheduleRepository.count() == 0) {
             log.info("init schedule");
-            scheduleRepository.save(ScheduleEntity.builder().id(1L).name("Run every 5 minute").cron("0 0/5 * * * ?").build());
+            scheduleRepository.save(ScheduleEntity.builder().id(1L).name("Run every minute").cron("0 0/1 * * * ?").build());
             scheduleRepository.save(ScheduleEntity.builder().id(2L).name("At 9:30").cron("0 30 9 * * ?").build());
             scheduleRepository.save(ScheduleEntity.builder().id(3L).name("At 12:00 AM, only on Sunday and Saturday").cron("0 0 0 ? * SUN,SAT").build());
         }
