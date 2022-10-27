@@ -9,12 +9,6 @@ spring:
     generate-ddl: true
     show-sql: true
     defer-datasource-initialization: true
-  h2:
-    console:
-      enabled: true
-      path: /h2
-      settings:
-        web-allow-others: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
