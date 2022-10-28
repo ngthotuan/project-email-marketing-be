@@ -23,12 +23,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
@@ -184,20 +179,20 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendMailTest(ScheduleCronjobRunEntity scheduleCronjobRunEntity) {
         Properties props = new Properties();
-        props.setProperty("mail.imaps.proxy.host",
+        props.setProperty("mail.smtp.proxy.host",
                 scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getHost());
-        props.setProperty("mail.imaps.proxy.port",
+        props.setProperty("mail.smtp.proxy.port",
                 scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getPort());
-        props.setProperty("mail.imaps.proxy.user",
+        props.setProperty("mail.smtp.proxy.user",
                 scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getUsername());
-        props.setProperty("mail.imaps.proxy.password",
+        props.setProperty("mail.smtp.proxy.password",
                 scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getPassword());
-        props.put("mail.smtp.user", scheduleCronjobRunEntity.getEmailEntity().getEmail());
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", 587);
-        props.put("mail.smtp.starttls.enable","true");
-        props.put("mail.smtp.debug", "false");
-        props.put("mail.smtp.auth","true");
+        props.setProperty("mail.smtp.user", scheduleCronjobRunEntity.getEmailEntity().getEmail());
+        props.setProperty("mail.smtp.host", "smtp.gmail.com");
+        props.setProperty("mail.smtp.port", "587");
+        props.setProperty("mail.smtp.starttls.enable", "true");
+        props.setProperty("mail.debug", "true");
+        props.setProperty("mail.smtp.auth", "true");
 
         var session = Session.getInstance(props, new Authenticator() {
             @Override
