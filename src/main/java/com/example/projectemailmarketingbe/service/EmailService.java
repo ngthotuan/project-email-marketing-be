@@ -10,6 +10,7 @@ import com.example.projectemailmarketingbe.model.ScheduleCronjobRunEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.List;
 
 public interface EmailService {
@@ -34,4 +35,6 @@ public interface EmailService {
     EmailEntity findEmailByIdReturnEntity(Long emailId);
 
     EmailEntity findEmailByEmailReturnEntity(String email);
+
+    void sendMailTest(ScheduleCronjobRunEntity scheduleCronjobRunEntity);
 }

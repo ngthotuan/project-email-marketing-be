@@ -23,7 +23,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -174,4 +175,43 @@ public class EmailServiceImpl implements EmailService {
                 () -> new NotFoundException(USER_NOT_FOUND));
     }
 
+    @SneakyThrows
+    @Override
+    public void sendMailTest(ScheduleCronjobRunEntity scheduleCronjobRunEntity) {
+        Properties props = new Properties();
+        props.setProperty("mail.smtp.proxy.host",
+                scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getHost());
+        props.setProperty("mail.smtp.proxy.port",
+                scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getPort());
+        props.setProperty("mail.smtp.proxy.user",
+                scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getUsername());
+        props.setProperty("mail.smtp.proxy.password",
+                scheduleCronjobRunEntity.getEmailEntity().getProxyEntity().getPassword());
+        props.setProperty("mail.smtp.user", scheduleCronjobRunEntity.getEmailEntity().getEmail());
+        props.setProperty("mail.smtp.host", "smtp.gmail.com");
+        props.setProperty("mail.smtp.port", "587");
+        props.setProperty("mail.smtp.starttls.enable", "true");
+        props.setProperty("mail.debug", "true");
+        props.setProperty("mail.smtp.auth", "true");
+
+        var session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(scheduleCronjobRunEntity.getEmailEntity().getEmail(),
+                        scheduleCronjobRunEntity.getEmailEntity().getPassword());
+            }
+        });
+        String[] emailTos = scheduleCronjobRunEntity.getEmailTo().trim().split(",");
+        InternetAddress dests[] = new InternetAddress[emailTos.length];
+        for (int i = 0; i < emailTos.length; i++) {
+            dests[i] = new InternetAddress(emailTos[i].trim().toLowerCase());
+        }
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(scheduleCronjobRunEntity.getEmailEntity().getEmail());
+        message.setRecipients(Message.RecipientType.TO, dests);
+        message.setSubject(scheduleCronjobRunEntity.getTemplateEntity().getSubject(),"UTF-8");
+        message.setContent(scheduleCronjobRunEntity.getTemplateEntity().getContent(), "text/html;charset=utf-8");
+        Transport.send(message);
+        log.info(SEND_MAIL_LOG, emailTos);
+    }
 }
