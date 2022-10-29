@@ -12,8 +12,8 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
@@ -35,7 +35,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             int lastIndexOf = file.getOriginalFilename().lastIndexOf(".");
             String extend = file.getOriginalFilename().substring(lastIndexOf, file.getOriginalFilename().length());
             String name = file.getOriginalFilename().substring(0, lastIndexOf);
-            String fileName = String.format("%s_%s%s", name, UUID.randomUUID(), extend);
+            String fileName = String.format("%s_%s%s", name, LocalDateTime.now(), extend);
             Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(fileName)));
             return fileName;
         } catch (Exception e) {
