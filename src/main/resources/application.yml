@@ -33,3 +33,6 @@ thread.pool:
   size: ${THREAD_POOL_SIZE:5}
 cron:
   reschedule: { CRON_RESCHEDULE: 0 0/10 * * * * }
+file:
+  controller:
+    endpoint: { FILE_CONTROLLER_ENDPOINT: http://localhost:8080/email-service/v1 }

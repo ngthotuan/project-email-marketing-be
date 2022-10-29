@@ -13,6 +13,6 @@ public class DefaultSendPushEmailNotificationTaskImpl extends AbstractNotificati
     private final EmailService emailService;
     @Override
     void sendNotificationToUser(ScheduleCronjobRunEntity scheduleCronjobRunEntity) throws MessagingException {
-        emailService.sendMailTest(scheduleCronjobRunEntity);
+        emailService.sendMail(scheduleCronjobRunEntity);
     }
 }
