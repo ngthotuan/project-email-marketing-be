@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -32,15 +33,23 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     @Override
     public String save(MultipartFile file) {
         try {
-            int lastIndexOf = file.getOriginalFilename().lastIndexOf(".");
-            String extend = file.getOriginalFilename().substring(lastIndexOf, file.getOriginalFilename().length());
-            String name = file.getOriginalFilename().substring(0, lastIndexOf);
-            String fileName = String.format("%s_%s%s", name, LocalDateTime.now(), extend);
-            Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(fileName)));
-            return fileName;
+            String fileNameUnique = createFileNameUnique(file.getOriginalFilename());
+            Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(fileNameUnique)));
+            return fileNameUnique;
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
+    }
+
+    private String createFileNameUnique(String fileName) {
+        int lastIndexOf = fileName.lastIndexOf(".");
+        String extend = fileName.substring(lastIndexOf, fileName.length());
+        String name = fileName.substring(0, lastIndexOf);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        String formattedDateTime = currentDateTime.format(formatter);
+        String key = formattedDateTime.replaceAll(":", "_");
+        return String.format("%s_%s%s", name, key, extend);
     }
 
     @Override
