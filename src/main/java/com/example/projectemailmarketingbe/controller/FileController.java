@@ -40,7 +40,7 @@ public class FileController {
         } catch (Exception e) {
             message = "Could not upload the file: " + multipartFile.getOriginalFilename() + "!";
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
-                    ResponseBodyDto.builder().data(message).statusCode(HttpStatus.EXPECTATION_FAILED.value()).build());
+                    ResponseBodyDto.builder().data(FileRpDtp.builder().message(message).build()).statusCode(HttpStatus.EXPECTATION_FAILED.value()).build());
         }
     }
 
