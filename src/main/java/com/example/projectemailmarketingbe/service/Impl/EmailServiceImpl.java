@@ -82,6 +82,7 @@ public class EmailServiceImpl implements EmailService {
         EmailEntity save = emailRepository.save(EmailEntity.builder()
                 .email(email.getEmail())
                 .password(email.getPassword())
+                .emailName(email.getEmailName())
                 .proxyEntity(proxyByIdReturnEntity).build());
         return emailMapper.emailToEmailDto(save);
     }
@@ -112,6 +113,7 @@ public class EmailServiceImpl implements EmailService {
         List<EmailEntity> emailEntities = emailDtos.stream().map(emailDto -> EmailEntity.builder()
                 .email(emailDto.getEmail())
                 .password(emailDto.getPassword())
+                .emailName(emailDto.getEmailName())
                 .proxyEntity(proxyService.findProxyByIdReturnEntity(emailDto.getProxyId())
                 ).build()).collect(Collectors.toList());
         for (EmailEntity emailEntity : emailEntities) {
@@ -154,7 +156,8 @@ public class EmailServiceImpl implements EmailService {
         String[] emailTos = scheduleCronjobRunEntity.getEmailTo().trim().split(",");
         for (String email : emailTos) {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom(scheduleCronjobRunEntity.getEmailEntity().getEmail());
+            helper.setFrom(new InternetAddress(scheduleCronjobRunEntity.getEmailEntity().getEmail(),
+                    scheduleCronjobRunEntity.getEmailEntity().getEmailName()));
             helper.setTo(email);
             helper.setSubject(scheduleCronjobRunEntity.getTemplateEntity().getSubject());
             helper.setText(scheduleCronjobRunEntity.getTemplateEntity().getContent(), true);

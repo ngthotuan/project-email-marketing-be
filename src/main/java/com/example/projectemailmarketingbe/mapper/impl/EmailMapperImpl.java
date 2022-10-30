@@ -14,6 +14,7 @@ public class EmailMapperImpl implements EmailMapper {
         return EmailRpDto.builder()
                 .email(emailEntity.getEmail())
                 .password(emailEntity.getPassword())
+                .emailName(emailEntity.getEmailName())
                 .proxyId(proxyEntity != null ? proxyEntity.getProxyId() : null)
                 .proxyName(proxyEntity != null ? proxyEntity.getName() : "")
                 .proxyUsername(proxyEntity != null ? proxyEntity.getUsername() : "")

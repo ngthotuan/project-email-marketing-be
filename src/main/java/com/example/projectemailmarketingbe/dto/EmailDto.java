@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class EmailDto {
     private Long proxyId;
     private String email;
+    private String emailName;
     private String password;
 }

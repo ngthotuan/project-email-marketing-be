@@ -21,6 +21,8 @@ public class EmailEntity extends Auditable<String> {
     @Column(unique = true)
     private String email;
 
+    private String emailName;
+
     private String password;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
