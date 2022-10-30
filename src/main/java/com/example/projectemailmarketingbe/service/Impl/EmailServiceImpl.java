@@ -49,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<EmailEntity> pageEmail = search.isBlank()
                 ? emailRepository.findAll(pageable)
-                : emailRepository.findAllByEmailContainingAndEmailNameContaining(search, pageable);
+                : emailRepository.findAllByEmailAndEmailName(search, pageable);
         PageResponseDto pageResponseDto = PageResponseDto
                 .builder()
                 .page(page)
