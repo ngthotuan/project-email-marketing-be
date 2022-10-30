@@ -49,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<EmailEntity> pageEmail = search.isBlank()
                 ? emailRepository.findAll(pageable)
-                : emailRepository.findAllByEmailContaining(search, pageable);
+                : emailRepository.findAllByEmailContainingAndEmailNameContaining(search, pageable);
         PageResponseDto pageResponseDto = PageResponseDto
                 .builder()
                 .page(page)
@@ -101,6 +101,7 @@ public class EmailServiceImpl implements EmailService {
                 .orElseThrow(() -> new NotFoundException(String.format("%s not found", email)));
         emailInDb.setEmail(email.getEmail());
         emailInDb.setPassword(email.getPassword());
+        emailInDb.setEmailName(email.getEmailName());
         ProxyEntity proxyByIdReturnEntity = proxyService.findProxyByIdReturnEntity(email.getProxyId());
         emailInDb.setProxyEntity(proxyByIdReturnEntity);
         return emailMapper.emailToEmailDto(emailInDb);
