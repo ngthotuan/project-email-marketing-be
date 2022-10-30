@@ -57,6 +57,7 @@ public class ScheduleCronjobServiceImpl implements ScheduleCronjobService {
             final Path<TemplateEntity> templatePath = root.get("templateEntity");
             final Path<ScheduleEntity> schedulePath = root.get("scheduleEntity");
             predicates.add(criteriaBuilder.and(criteriaBuilder.like(emailPath.get("email"), "%" + search + "%")));
+            predicates.add(criteriaBuilder.and(criteriaBuilder.like(emailPath.get("emailName"), "%" + search + "%")));
             predicates.add(criteriaBuilder.and(criteriaBuilder.like(templatePath.get("name"), "%" + search + "%")));
             predicates.add(criteriaBuilder.and(criteriaBuilder.like(schedulePath.get("name"), "%" + search + "%")));
             return criteriaBuilder.or(predicates.toArray(new Predicate[predicates.size()]));
