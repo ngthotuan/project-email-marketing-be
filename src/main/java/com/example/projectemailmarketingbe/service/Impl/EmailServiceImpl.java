@@ -6,9 +6,11 @@ import com.example.projectemailmarketingbe.dto.PageResponseDto;
 import com.example.projectemailmarketingbe.exception.NotFoundException;
 import com.example.projectemailmarketingbe.mapper.EmailMapper;
 import com.example.projectemailmarketingbe.model.EmailEntity;
+import com.example.projectemailmarketingbe.model.FileEntity;
 import com.example.projectemailmarketingbe.model.ProxyEntity;
 import com.example.projectemailmarketingbe.model.ScheduleCronjobRunEntity;
 import com.example.projectemailmarketingbe.repository.EmailRepository;
+import com.example.projectemailmarketingbe.repository.FileRepository;
 import com.example.projectemailmarketingbe.service.EmailService;
 import com.example.projectemailmarketingbe.service.FilesStorageService;
 import com.example.projectemailmarketingbe.service.ProxyService;
@@ -45,6 +47,8 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSenderImpl javaMailSender;
     private final ProxyService proxyService;
     private final FilesStorageService filesStorageService;
+    private final FileRepository fileRepository;
+
 
     @Override
     public PageResponseDto<EmailRpDto> findAll(String search, int page, int size) {
@@ -163,7 +167,8 @@ public class EmailServiceImpl implements EmailService {
                     scheduleCronjobRunEntity.getEmailEntity().getEmailName()));
             helper.setTo(email);
             helper.setSubject(scheduleCronjobRunEntity.getTemplateEntity().getSubject());
-            scheduleCronjobRunEntity.getTemplateEntity().getFileEntities().forEach(fileEntity -> {
+            List<FileEntity> fileEntities = fileRepository.findByTemplateEntity(scheduleCronjobRunEntity.getTemplateEntity());
+            fileEntities.forEach(fileEntity -> {
                 try {
                     helper.addAttachment(fileEntity.getOriginName(), filesStorageService.load(fileEntity.getName()));
                 } catch (MessagingException e) {
