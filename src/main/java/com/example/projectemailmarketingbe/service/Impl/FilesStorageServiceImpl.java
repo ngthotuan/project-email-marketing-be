@@ -1,6 +1,8 @@
 package com.example.projectemailmarketingbe.service.Impl;
 
 import com.example.projectemailmarketingbe.service.FilesStorageService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -9,17 +11,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import static com.example.projectemailmarketingbe.constant.PathConstant.imagePath;
+
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class FilesStorageServiceImpl implements FilesStorageService {
     private final Path root = Paths.get("uploads");
+    private final URI fileEndpoint;
+
 
     @Override
     public void init() {
@@ -33,26 +40,16 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
 
     @Override
-    public String save(MultipartFile file) {
+    public String save(MultipartFile file, String fileNameUnique) {
         try {
-            String fileNameUnique = createFileNameUnique(file.getOriginalFilename());
             Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(fileNameUnique)));
-            return fileNameUnique;
+            String url = String.format("%s", fileEndpoint.toString() + String.format(imagePath, fileNameUnique));
+            return url;
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }
 
-    private String createFileNameUnique(String fileName) {
-        int lastIndexOf = fileName.lastIndexOf(".");
-        String extend = fileName.substring(lastIndexOf, fileName.length());
-        String name = fileName.substring(0, lastIndexOf);
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        String formattedDateTime = currentDateTime.format(formatter);
-        String key = formattedDateTime.replaceAll(":", "_");
-        return String.format("%s_%s%s", name, key, extend);
-    }
 
     @Override
     public Resource load(String filename) {
@@ -83,4 +80,15 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             throw new RuntimeException("Could not load the files!");
         }
     }
+
+    @Override
+    public void deleteFile(String name) {
+        try {
+            FileSystemUtils.deleteRecursively(root.resolve(name));
+        } catch (IOException e) {
+            log.error(String.format("delete file fail! Cannot find file %s", name));
+        }
+    }
+
+
 }

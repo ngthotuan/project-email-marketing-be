@@ -3,12 +3,19 @@ package com.example.projectemailmarketingbe.mapper.impl;
 import com.example.projectemailmarketingbe.dto.TemplateDto;
 import com.example.projectemailmarketingbe.dto.TemplateRpDto;
 import com.example.projectemailmarketingbe.dto.TemplateRpMDto;
+import com.example.projectemailmarketingbe.mapper.FileMapper;
 import com.example.projectemailmarketingbe.mapper.TemplateMapper;
 import com.example.projectemailmarketingbe.model.TemplateEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
 @Component
+@RequiredArgsConstructor
 public class TemplateMapperImpl implements TemplateMapper {
+    private final FileMapper fileMapper;
+
     @Override
     public TemplateRpDto templateEntityToTemplateRpDto(TemplateEntity templateEntity) {
         return TemplateRpDto.builder()
@@ -16,6 +23,9 @@ public class TemplateMapperImpl implements TemplateMapper {
                 .name(templateEntity.getName())
                 .content(templateEntity.getContent())
                 .subject(templateEntity.getSubject())
+                .fileRpDtos(templateEntity.getFileEntities() != null
+                        ? templateEntity.getFileEntities().stream().map(fileMapper::fileEntityToFileRpDto).collect(Collectors.toList())
+                        : null)
                 .build();
     }
 

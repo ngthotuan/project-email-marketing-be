@@ -5,7 +5,9 @@ import lombok.Data;
 
 @Builder
 @Data
-public class FileRpDtp {
+public class FileRpDto {
     private String message;
+    private String name;
+    private String originName;
     private String url;
 }
