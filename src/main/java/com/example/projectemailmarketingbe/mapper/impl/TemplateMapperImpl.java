@@ -23,7 +23,7 @@ public class TemplateMapperImpl implements TemplateMapper {
                 .name(templateEntity.getName())
                 .content(templateEntity.getContent())
                 .subject(templateEntity.getSubject())
-                .fileRpDtos(templateEntity.getFileEntities() != null
+                .files(templateEntity.getFileEntities() != null
                         ? templateEntity.getFileEntities().stream().map(fileMapper::fileEntityToFileRpDto).collect(Collectors.toList())
                         : null)
                 .build();

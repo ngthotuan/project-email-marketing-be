@@ -7,5 +7,6 @@ ENV DB_USERNAME=emtest
 ENV DB_PASSWORD=emtest
 ENV SECRET=secret4684646684646846468488468suhfusdhfiseifhisifhisheifhsiehfihsihe
 ENV THREAD_POOL_SIZE=5
+ENV FILE_CONTROLLER_ENDPOINT=http://localhost:8080/email-service/v1
 EXPOSE 8080
 CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
