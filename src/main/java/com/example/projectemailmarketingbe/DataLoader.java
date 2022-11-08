@@ -1,15 +1,11 @@
 package com.example.projectemailmarketingbe;
 
-import com.example.projectemailmarketingbe.dto.UserRegisterDto;
 import com.example.projectemailmarketingbe.model.ScheduleEntity;
-import com.example.projectemailmarketingbe.model.UserEntity;
-import com.example.projectemailmarketingbe.repository.*;
+import com.example.projectemailmarketingbe.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,31 +16,31 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DataLoader implements ApplicationRunner {
 
-    private final UserRepository userRepository;
-    private final EmailRepository emailRepository;
+    //    private final UserRepository userRepository;
+//    private final EmailRepository emailRepository;
     private final ScheduleRepository scheduleRepository;
-    private final ProxyRepository proxyRepository;
-    private final TemplateRepository templateRepository;
-    private final ScheduleCronjobRepository scheduleCronjobRepository;
-    private final ModelMapper modelMapper;
-    private final PasswordEncoder passwordEncoder;
+//    private final ProxyRepository proxyRepository;
+//    private final TemplateRepository templateRepository;
+//    private final ScheduleCronjobRepository scheduleCronjobRepository;
+//    private final ModelMapper modelMapper;
+//    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         // init user
-        if (userRepository.count() == 0) {
-            log.info("init user");
-            UserRegisterDto userRegisterDto = UserRegisterDto.builder()
-                    .username("emtest")
-                    .password("emtest")
-                    .name("EM Test")
-                    .email("em@gmail.com")
-                    .build();
-            UserEntity user = modelMapper.map(userRegisterDto, UserEntity.class);
-            user.setRole("admin");
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-        }
+//        if (userRepository.count() == 0) {
+//            log.info("init user");
+//            UserRegisterDto userRegisterDto = UserRegisterDto.builder()
+//                    .username("emtest")
+//                    .password("emtest")
+//                    .name("EM Test")
+//                    .email("em@gmail.com")
+//                    .build();
+//            UserEntity user = modelMapper.map(userRegisterDto, UserEntity.class);
+//            user.setRole("admin");
+//            user.setPassword(passwordEncoder.encode(user.getPassword()));
+//            userRepository.save(user);
+//        }
 
         // init schedule
         if (scheduleRepository.count() == 0) {
