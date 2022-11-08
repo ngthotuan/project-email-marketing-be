@@ -16,5 +16,5 @@ public class TemplateRpDto {
     private String name;
     private String subject;
     private String content;
-    List<FileRpDto> fileRpDtos;
+    List<FileRpDto> files;
 }

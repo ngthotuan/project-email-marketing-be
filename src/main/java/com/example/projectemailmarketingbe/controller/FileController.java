@@ -3,6 +3,9 @@ package com.example.projectemailmarketingbe.controller;
 import com.example.projectemailmarketingbe.dto.FileInfo;
 import com.example.projectemailmarketingbe.dto.FileRpDto;
 import com.example.projectemailmarketingbe.dto.ResponseBodyDto;
+import com.example.projectemailmarketingbe.exception.NotFoundException;
+import com.example.projectemailmarketingbe.model.FileEntity;
+import com.example.projectemailmarketingbe.repository.FileRepository;
 import com.example.projectemailmarketingbe.service.FilesStorageService;
 import com.example.projectemailmarketingbe.utils.FileNameUtils;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 public class FileController {
     private final FilesStorageService filesStorageService;
     private final FileNameUtils fileNameUtils;
+    private final FileRepository fileRepository;
 
     @PostMapping("/file")
     public ResponseEntity uploadFile(@RequestParam("file") MultipartFile multipartFile) {
@@ -67,7 +71,9 @@ public class FileController {
     @GetMapping(value = "/attachments/{filename:.+}")
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         Resource file = filesStorageService.load(filename);
+        var fileEntity = fileRepository.findByName(filename).orElseThrow(() -> new NotFoundException("Cannot " +
+                "fine file has file name" + filename));
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+                "attachment; filename=\"" + fileEntity.getOriginName() + "\"").body(file);
     }
 }
