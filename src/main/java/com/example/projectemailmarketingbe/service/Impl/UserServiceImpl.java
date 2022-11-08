@@ -10,6 +10,7 @@ import com.example.projectemailmarketingbe.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +25,19 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+    @Value("${com.example.demo.jwt.secret}")
+    private String secretKeyParam;
 
     @Override
     public UserRegisterRpDto register(UserRegisterDto userRegisterRequestDto) {
-        userRepository.findByUsername(userRegisterRequestDto.getUsername()).ifPresent((user) ->{
+        if (!validateKey(userRegisterRequestDto.getSecretKey()))
+            throw new NotFoundException("secret key is incorrect!");
+        userRepository.findByUsername(userRegisterRequestDto.getUsername()).ifPresent((user) -> {
             throw new BadRequestException(String.format(USER_EXISTED, userRegisterRequestDto.getUsername()));
         });
         UserEntity user = modelMapper.map(userRegisterRequestDto, UserEntity.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole("ADMIN");
         UserEntity userSaved = userRepository.save(user);
         return modelMapper.map(userSaved, UserRegisterRpDto.class);
     }
@@ -67,5 +73,9 @@ public class UserServiceImpl implements UserService {
         UserInfoRpDto userInfoRpDto = modelMapper.map(user, UserInfoRpDto.class);
         userInfoRpDto.setRole(user.getRole());
         return userInfoRpDto;
+    }
+
+    private Boolean validateKey(String secretKey) {
+        return secretKey.equals(secretKeyParam);
     }
 }

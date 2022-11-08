@@ -17,4 +17,6 @@ public class UserRegisterDto {
         private String email;
         @NotBlank(message = "Name cannot be blank")
         private String name;
+        @NotBlank(message = "secret cannot be blank")
+        private String secretKey;
 }
